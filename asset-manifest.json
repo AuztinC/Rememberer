@@ -1,16 +1,15 @@
 {
   "files": {
-    "main.css": "/Rememberer/static/css/main.073c9b0a.css",
-    "main.js": "/Rememberer/static/js/main.7d2b914a.js",
+    "main.css": "/Rememberer/static/css/main.6508757c.css",
+    "main.js": "/Rememberer/static/js/main.7873c4ca.js",
     "static/js/787.9a9be24f.chunk.js": "/Rememberer/static/js/787.9a9be24f.chunk.js",
-    "static/media/logo.svg": "/Rememberer/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
     "index.html": "/Rememberer/index.html",
-    "main.073c9b0a.css.map": "/Rememberer/static/css/main.073c9b0a.css.map",
-    "main.7d2b914a.js.map": "/Rememberer/static/js/main.7d2b914a.js.map",
+    "main.6508757c.css.map": "/Rememberer/static/css/main.6508757c.css.map",
+    "main.7873c4ca.js.map": "/Rememberer/static/js/main.7873c4ca.js.map",
     "787.9a9be24f.chunk.js.map": "/Rememberer/static/js/787.9a9be24f.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.073c9b0a.css",
-    "static/js/main.7d2b914a.js"
+    "static/css/main.6508757c.css",
+    "static/js/main.7873c4ca.js"
   ]
 }
