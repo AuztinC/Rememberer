@@ -1,38 +1,86 @@
-.App {
-  text-align: center;
+*{
+  box-sizing: border-box;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-user-drag: none;
 }
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
+body {
+  margin: 0px;
+  background-image: linear-gradient(orange, grey);
+  overflow: hidden;
   min-height: 100vh;
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  align-items: center;
+}
+
+.App {
+  border: 5px red solid;
+  width: 90vw;
+  height: 90vh;
+  padding-bottom: 20px;
+}
+
+#game {
+  background-color: floralwhite;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 5px;
+  padding-top: 5px;
+}
+
+.card{
+  background-color: transparent;
+  margin-left: 5px;
+  margin-top: 5px;
+  width: calc(100% / 6);
+  height: 15%;
+  perspective: 1000px;
+}
+.card-inner{
+  transform: rotateY(180deg);
+  border: solid black 2px;
+  height: 100%;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+.card-front, .card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+.card-front {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #bbb;
+}
+
+.card-back {
+  background-color: #2980b9;
   color: white;
+  transform: rotateY(180deg);
 }
 
-.App-link {
-  color: #61dafb;
+.img{
+  /* user-select: none; */
+  max-width: 92%;
+  max-height: 95%;
+}
+#form{
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+#input{
+  margin-left: 15px;
 }
+
+
+
