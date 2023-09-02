@@ -56,7 +56,10 @@ export default function Game() {
       } else return
     }
   }
-
+  // const game = document.querySelector("#game")
+  // for(let i = 0; i < 15; i++){
+  //   game.appendChild(<Card {...data}/>)
+  // }
   return (<>
     <form id="form" onSubmit={handleSubmit}>
       <button>New Game</button>
