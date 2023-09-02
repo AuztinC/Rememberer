@@ -17,6 +17,7 @@ export default function Game() {
     setActive: setActive,
     input: input,
     setInput: setInput,
+    inGame: inGame,
   }
 
   //    --- Compare cards currently in Active array
@@ -27,6 +28,7 @@ export default function Game() {
         setActive([])
         console.log(score.current)
         if(score.current === 30){ // --- WINNER
+          setInGame(false)
           console.log("YOU WIH")
         }
       } else {
@@ -42,14 +44,24 @@ export default function Game() {
 
   function handleSubmit(event){
     event.preventDefault()
-    setInput(event.target.input.value)
-    event.target.input.value = ""
+    if(inGame){
+      if(window.confirm("This will reset your current game!")){
+        Array.from(document.getElementsByClassName("card-inner")).forEach((e)=>{
+          e.style.transform = "rotateY(180deg)"
+        })
+        setTimeout(()=>{
+          setInput(event.target.input.value)
+          event.target.input.value = ""
+        }, 700)
+      } else return
+    }
   }
 
   return (<>
     <form id="form" onSubmit={handleSubmit}>
-        <label htmlFor="input">Choose Your Images!</label>
-        <input type="text" placeholder="Image Search" name="input" id="input"/>
+      <button>New Game</button>
+      <label htmlFor="input">Choose Your Images!</label>
+      <input type="text" placeholder="Image Search" name="input" id="input"/>
     </form>
     <div id='game'>
         <Card {...data}/>
