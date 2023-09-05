@@ -15,33 +15,33 @@ export default function Game() {
   let score = useRef(0)
 
 useEffect(() => {
-  setCardBank(Array.from(document.getElementsByClassName("img")))
-
-}, [])
+  async function fetchCard() {
+    setCardBank(Array.from(document.getElementsByClassName("img")))
+    fetch(`https://pixabay.com/api/?key=35904460-6da0f483724d8177c3f681e67&q=${input}&orientation=horizontal&per_page=100`)
+        .then((response) => response.json())
+        .then((data) => { setPicBank(data.hits)
+        })
+    }
+      fetchCard()
+  }, [input])
 
 useEffect(() => {
-  if(cardBank.length > 0){
-    let tempCards = {
-      one: Math.round(Math.random()*cardBank.length -1),
-      two: Math.round(Math.random()*cardBank.length -1)
+  if(cardBank.length > 1){
+    // let tempCards = {
+    //   one: Math.round(Math.random() * cardBank.length -1),
+    //   two: Math.round(Math.random() * cardBank.length -1)
+    // }
+    if(picBank.length > 0 ){
+      for(let i = 0; i < cardBank.length; i++){
+        let curRan = picBank[Math.round(Math.random() * picBank.length)].largeImageURL
+        // cardBank[i].src = curRan
+        // setCardBank(prev=>[...prev, card])
+        // setCardBank(cardBank.filter(el => el !== cardBank[i]))
+        console.log(cardBank)
+      }
     }
-    if(tempCards.one === tempCards.two){
-      tempCards.one = Math.round(Math.random()*cardBank.length -1)
-    }
-    for(let i = 0; i < cardBank.length; i++){
-      // console.log(picBank)
-      let curRan = picBank[Math.round(Math.random() * picBank.length)]
-      // cardBank[i].src = curRan
-      // cardBank[i+1].src = curRan
-      cardBank[tempCards.one].src = curRan
-      // cardBank[tempCards.two].src = curRan
-      // cardBank.splice(cardBank[tempCards.one], 1)
-      // setCardBank(prev=>[cardBank])
-      // setCardBank(prev=>[prev.splice(cardBank[tempCards.two], 1)])
-      console.log(cardBank)
-    }
-  }
-}, [cardBank, picBank])
+  } else if(cardBank.length === 0) return
+}, [ picBank])
 
   const data = {
     active: active,
