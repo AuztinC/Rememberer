@@ -10,7 +10,38 @@ export default function Game() {
   const [active, setActive] = useState([])
   const [input, setInput] = useState("")
   const [inGame, setInGame] = useState(true)
+  const [picBank, setPicBank] = useState([])
+  const [cardBank, setCardBank] = useState([])
   let score = useRef(0)
+
+useEffect(() => {
+  setCardBank(Array.from(document.getElementsByClassName("img")))
+
+}, [])
+
+useEffect(() => {
+  if(cardBank.length > 0){
+    let tempCards = {
+      one: Math.round(Math.random()*cardBank.length -1),
+      two: Math.round(Math.random()*cardBank.length -1)
+    }
+    if(tempCards.one === tempCards.two){
+      tempCards.one = Math.round(Math.random()*cardBank.length -1)
+    }
+    for(let i = 0; i < cardBank.length; i++){
+      // console.log(picBank)
+      let curRan = picBank[Math.round(Math.random() * picBank.length)]
+      // cardBank[i].src = curRan
+      // cardBank[i+1].src = curRan
+      cardBank[tempCards.one].src = curRan
+      // cardBank[tempCards.two].src = curRan
+      // cardBank.splice(cardBank[tempCards.one], 1)
+      // setCardBank(prev=>[cardBank])
+      // setCardBank(prev=>[prev.splice(cardBank[tempCards.two], 1)])
+      console.log(cardBank)
+    }
+  }
+}, [cardBank, picBank])
 
   const data = {
     active: active,
@@ -18,18 +49,18 @@ export default function Game() {
     input: input,
     setInput: setInput,
     inGame: inGame,
+    picBank: picBank,
+    setPicBank: setPicBank,
   }
-
+// console.log(cardBank)
   //    --- Compare cards currently in Active array
   useEffect(() =>{
     if(active.length === 2){
       if(active[0].className === active[1].className){
         score.current = score.current + 2
         setActive([])
-        console.log(score.current)
         if(score.current === 30){ // --- WINNER
           setInGame(false)
-          console.log("YOU WIH")
         }
       } else {
         setTimeout(()=>{
@@ -56,10 +87,10 @@ export default function Game() {
       } else return
     }
   }
-  // const game = document.querySelector("#game")
-  // for(let i = 0; i < 15; i++){
-  //   game.appendChild(<Card {...data}/>)
-  // }
+
+
+
+
   return (<>
     <form id="form" onSubmit={handleSubmit}>
       <button>New Game</button>
@@ -67,6 +98,21 @@ export default function Game() {
       <input type="text" placeholder="Image Search" name="input" id="input"/>
     </form>
     <div id='game'>
+        <Card {...data}/>
+        <Card {...data}/>
+        <Card {...data}/>
+        <Card {...data}/>
+        <Card {...data}/>
+        <Card {...data}/>
+        <Card {...data}/>
+        <Card {...data}/>
+        <Card {...data}/>
+        <Card {...data}/>
+        <Card {...data}/>
+        <Card {...data}/>
+        <Card {...data}/>
+        <Card {...data}/>
+        <Card {...data}/>
         <Card {...data}/>
         <Card {...data}/>
         <Card {...data}/>
