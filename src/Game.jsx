@@ -37,39 +37,28 @@ useEffect(() => {
 
 
 useEffect(() => {
-  // if(cardBank.length > 1){
-  //   // let tempCards = {
-  //   //   one: Math.round(Math.random() * cardBank.length -1),
-  //   //   two: Math.round(Math.random() * cardBank.length -1)
-  //   // }
-  //   if(picBank.length > 0 ){
-    //     for(let i = 0; i < cardBank.length; i++){
-      //       let curRan = picBank[Math.round(Math.random() * picBank.length)]
-      //       setCard({ imgUrl: curRan.largeImageURL, Id: curRan.id })
-      //       // setCardBank(prev=>[...prev, card])
-      //       // setCardBank(cardBank.filter(el => el !== cardBank[i]))
-      //       console.log(cardBank)
-      //     }
-      //   }
-      // } else if(cardBank.length === 0) return
+ console.log(picBank)
       if(picBank.length === 100 ){
         if(cardBank.length < 30){
           // count = 0
           let curRan = picBank[Math.round(Math.random() * picBank.length -1 )].largeImageURL
-          setCardBank(cards=>[...cards, {img: curRan}])
-          setCardBank(cards=>[...cards, {img: curRan}])
-          if(cardBank === 30 && count.current === 0){}
-          setTimeout(() => {
-            let tempArr = cardBank
-                .map(card=>({ card, sort: Math.random() }))
-                .sort((a, b) => a.sort - b.sort)
-                .map(({ card }) => card)
-              console.log(tempArr)
-              setCardBank(tempArr)
-          }, 0);
-          count.current = 1
+          console.log(Math.round(Math.random() * picBank.length -1 ))
+          setCardBank(cards=>[...cards, {img: curRan}, {img: curRan}])
+          // setCardBank(cards=>[...cards, {img: curRan}])
+          
         }
-        }
+        
+      }
+      if(cardBank.length === 30 && count.current === 0){
+          let tempArr = cardBank
+          .map(card=>({ card, sort: Math.random() }))
+          .sort((a, b) => a.sort - b.sort)
+          .map(({ card }) => card)
+          // console.log(tempArr)
+          setCardBank(tempArr)
+        count.current = 1
+      }
+      // console.log(cardBank.length)
       }, [picBank, cardBank])
 
 
@@ -97,9 +86,10 @@ useEffect(() => {
     event.preventDefault()
     if(inGame){
       if(window.confirm("This will reset your current game!")){
-        Array.from(document.getElementsByClassName("card-inner")).forEach((e)=>{
-          e.style.transform = "rotateY(180deg)"
-        })
+        setCardBank([])
+        // Array.from(document.getElementsByClassName("card-inner")).forEach((e)=>{
+        //   e.style.transform = "rotateY(180deg)"
+        // })
         setTimeout(()=>{
           setInput(event.target.input.value)
           event.target.input.value = ""
@@ -116,7 +106,7 @@ useEffect(() => {
       <input type="text" placeholder="Image Search" name="input" id="input"/>
     </form>
     <div id='game'>
-      { cardBank.map((card, i) => {
+      { cardBank.map((card) => {
         return <>
           <Card img = {card.img} />
         </>
