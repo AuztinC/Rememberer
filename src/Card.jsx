@@ -1,6 +1,6 @@
 // import React, {useEffect, useState } from 'react'
 
-export default function Card({ setActive, active }) {
+export default function Card({ setActive, active, img }) {
 
     //    --- Add clicked card to "Active" array for comparing
     function handleClick(event){
@@ -10,16 +10,16 @@ export default function Card({ setActive, active }) {
       }
     }
 
-  return (<>
-    <div className="card" >
+  return <>
+    <div className="card">
       <div className="card-inner">
         <div className="card-front">
-        <img className="img" alt="card"/>
+        <img className="img" alt="card" src={img}/>
         </div>
         <div className={`card-back`} onClick={handleClick}>
           this is the back
         </div>
       </div>
     </div>
-    </>)
+    </>
 }
