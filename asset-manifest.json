@@ -1,15 +1,18 @@
 {
   "files": {
-    "main.css": "/Rememberer/static/css/main.b70a32cb.css",
-    "main.js": "/Rememberer/static/js/main.9fc73db1.js",
+    "main.css": "/Rememberer/static/css/main.5f5a4636.css",
+    "main.js": "/Rememberer/static/js/main.244d9ffd.js",
     "static/js/787.9a9be24f.chunk.js": "/Rememberer/static/js/787.9a9be24f.chunk.js",
+    "static/media/OrangeQuestion.png": "/Rememberer/static/media/OrangeQuestion.eec4eac2c659b5bf2c48.png",
+    "static/media/oriental-tiles.png": "/Rememberer/static/media/oriental-tiles.eb925fbd4b61c241aacd.png",
+    "static/media/dark-paths.webp": "/Rememberer/static/media/dark-paths.924de6016b7040c4ba3c.webp",
     "index.html": "/Rememberer/index.html",
-    "main.b70a32cb.css.map": "/Rememberer/static/css/main.b70a32cb.css.map",
-    "main.9fc73db1.js.map": "/Rememberer/static/js/main.9fc73db1.js.map",
+    "main.5f5a4636.css.map": "/Rememberer/static/css/main.5f5a4636.css.map",
+    "main.244d9ffd.js.map": "/Rememberer/static/js/main.244d9ffd.js.map",
     "787.9a9be24f.chunk.js.map": "/Rememberer/static/js/787.9a9be24f.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.b70a32cb.css",
-    "static/js/main.9fc73db1.js"
+    "static/css/main.5f5a4636.css",
+    "static/js/main.244d9ffd.js"
   ]
 }
