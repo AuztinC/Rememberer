@@ -7,7 +7,7 @@ import Card from './Card'
 // timer?
 
 export default function Game() {
-  const [hash, setHash] = useState("puppies")
+  const [hash, setHash] = useState("kittens")
   const [active, setActive] = useState([])
   const [inGame, setInGame] = useState(true)
   const [picBank, setPicBank] = useState([])
@@ -59,11 +59,13 @@ export default function Game() {
       }
   }, [picBank])
 
+  let correctCards = []
   useEffect(() =>{ //    --- Compare cards currently in Active array
-    console.log(active)
     if(active.length === 2){
       if(active[0].className === active[1].className){ // --- Match!
         score.current = score.current + 2
+        correctCards.push(...correctCards, active[0], active[1])
+        console.log(correctCards)
         setActive([])
         if(score.current === 30){ // --- WINNER
           setInGame(false)
@@ -104,7 +106,7 @@ export default function Game() {
     <form id="form" onSubmit={handleSubmit} >
       <button >New Game</button>
       <label  htmlFor="input">Choose Your Images!</label>
-      <input  type="text" placeholder="Puppies.." name="input" id="input"/>
+      <input  type="text" placeholder={hash} name="input" id="input"/>
     </form>
 
     <div id='game'>

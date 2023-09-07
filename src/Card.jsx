@@ -17,7 +17,7 @@ export default function Card({ setActive, active, img, id }) {
           <img className="img" alt="card" src={img} key={id}/>
         </div>
         <div className={`card-back ${id}`} onClick={handleClick}>
-          <img src={QuestionMark} alt="wtf" />
+          <img src={QuestionMark} alt="?" />
         </div>
       </div>
     </div>
