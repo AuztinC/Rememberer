@@ -1,4 +1,5 @@
 import React, { useId } from 'react'
+import QuestionMark from './img/OrangeQuestion.png'
 
 export default function Card({ setActive, active, img, id }) {
 
@@ -10,13 +11,13 @@ export default function Card({ setActive, active, img, id }) {
       }
     }
   return <>
-    <div className="card">
-      <div className="card-inner">
-        <div className="card-front">
-        <img className="img" alt="card" src={img}/>
+    <div className="card" key={id}>
+      <div className="card-inner" key={id}>
+        <div className="card-front" key={id}>
+          <img className="img" alt="card" src={img} key={id}/>
         </div>
         <div className={`card-back ${id}`} onClick={handleClick}>
-          this is the back
+          <img src={QuestionMark} alt="wtf" />
         </div>
       </div>
     </div>

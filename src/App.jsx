@@ -9,8 +9,8 @@ function App() {
 
   return (
 
-    <div className='App' key={useId()}>
-      <div id="game" key={useId()}>
+    <div className='App' key={223}>
+      <div id="game" key={366}>
         <Game />
       </div>
     </div>

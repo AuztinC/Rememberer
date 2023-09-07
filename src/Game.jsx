@@ -7,49 +7,48 @@ import Card from './Card'
 // timer?
 
 export default function Game() {
+  const [hash, setHash] = useState("puppies")
   const [active, setActive] = useState([])
-  const [input, setInput] = useState({val: ""})
   const [inGame, setInGame] = useState(true)
   const [picBank, setPicBank] = useState([])
   const [cardBank, setCardBank] = useState([])
   let score = useRef(0)
-  let count = useRef(0)
 
-
+  useEffect(()=>{
+    window.location.hash = hash
+    window.addEventListener("hashchange", ()=> {
+      setHash(window.location.hash.slice(1))
+    })
+  }, [])
 
   useEffect(() => {
     async function fetchCard() {
       setCardBank(Array.from(document.getElementsByClassName("img")))
       let page = Math.ceil(Math.random()*4);
-      fetch(`https://pixabay.com/api/?key=35904460-6da0f483724d8177c3f681e67&q=${input.val}&orientation=horizontal&per_page=15&page=${page}`)
+      fetch(`https://pixabay.com/api/?key=35904460-6da0f483724d8177c3f681e67&q=${hash}&orientation=horizontal&per_page=50&page=${page}`)
           .then((response) => response.json())
           .then((data) => {
             setPicBank(data.hits)
           })
         }
         fetchCard()
-        count.current = 0
-      }, [input])
+      }, [hash])
 
-    useEffect(() => {
-      if(picBank.length === 15 ){
+    useEffect(() => { // --- Once image bank fills up we set 2 images with to same index.
+      if(picBank.length === 50 ){
         let cb = [];
-          for (let i = 0; i < 15; i++) {
-            let curRan = picBank[Math.floor(Math.random() * (picBank.length - 1) )]
-            
-            if (curRan === undefined) {
-              console.log("BLANKS")
-          }
-
-          
-          if(curRan != undefined){
+        for (let i = 0; i < 15; i++) {
+          let curRan = picBank[Math.floor(Math.random() * (picBank.length - 1) )]
+          if(curRan !== undefined){
             cb.push(...[{img: curRan.largeImageURL, id: curRan.id}, {img: curRan.largeImageURL, id: curRan.id}])
           } else {
-            
+            console.log("halt") // --- If we didn't get an image.
+            setTimeout(() => {
+              reset()
+            }, 1000);
           }
         }
-        
-        for (let i = 0; i < 3; i++) {
+        for (let i = 0; i < 3; i++) { // --- Shuffle our cards.
             let tempArr = cb
             .map(card=>({ card, sort: Math.random() }))
             .sort((a, b) => a.sort - b.sort)
@@ -58,22 +57,19 @@ export default function Game() {
         }
         setCardBank(cb);
       }
-
   }, [picBank])
 
-
-  //    --- Compare cards currently in Active array
-  useEffect(() =>{
+  useEffect(() =>{ //    --- Compare cards currently in Active array
     console.log(active)
     if(active.length === 2){
-      if(active[0].className === active[1].className){
+      if(active[0].className === active[1].className){ // --- Match!
         score.current = score.current + 2
         setActive([])
         if(score.current === 30){ // --- WINNER
           setInGame(false)
         }
       } else {
-        setTimeout(()=>{
+        setTimeout(()=>{ // --- No match
           active[0].parentElement.style.transform = "rotateY(180deg)"
           active[1].parentElement.style.transform = "rotateY(180deg)"
           setActive([])
@@ -94,22 +90,21 @@ export default function Game() {
     }
   }
   function reset(ev){
-    // Array.from(document.getElementsByClassName("card-inner")).forEach((e)=>{
-    //   e.style.transform = "rotateY(180deg)"
-    // })
+    Array.from(document.getElementsByClassName("card-inner")).forEach((e)=>{
+      e.style.transform = "rotateY(180deg)"
+    })
     setTimeout(()=>{
-      setInput({val: ev.target.input.value})
-      // setCardBank([])
-      // event.target.input.value = ""
+      window.location.hash = `${ev.target.input.value}`
+      ev.target.input.placeholder = ev.target.input.value
+      ev.target.input.value = ""
     }, 700)
-    
   }
 
   return (<>
-    <form id="form" onSubmit={handleSubmit}>
-      <button>New Game</button>
-      <label htmlFor="input">Choose Your Images!</label>
-      <input type="text" placeholder="Puppies.." name="input" id="input"/>
+    <form id="form" onSubmit={handleSubmit} >
+      <button >New Game</button>
+      <label  htmlFor="input">Choose Your Images!</label>
+      <input  type="text" placeholder="Puppies.." name="input" id="input"/>
     </form>
 
     <div id='game'>

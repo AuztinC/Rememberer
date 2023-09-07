@@ -4,9 +4,10 @@
   user-select: none;
   -webkit-user-drag: none;
 }
+/* /*   */
 body {
   margin: 0px;
-  background-image: linear-gradient(orange, grey);
+  background:linear-gradient(to top, rgba(255, 166, 0, .6), rgba(247, 247, 247, 0)), url("../img/oriental-tiles.png");
   overflow: hidden;
   min-height: 100vh;
   display: flex;
@@ -16,14 +17,14 @@ body {
 
 .App {
   border-radius: 5px;
-  border: 5px orangered solid;
+  border: 10px orangered ridge;
   width: 80vw;
   height: 95vh;
   padding-bottom: 32px;
 }
 
 #game {
-  background-color: whitesmoke;
+  background: url("../img/serious-white.png");
   width: 100%;
   height: 100%;
   display: flex;
@@ -37,14 +38,13 @@ body {
 .card{
   background-color: transparent;
   margin-left: 5px;
-  /* margin-top: 5px; */
   width: calc(100% / 6);
   height: 15%;
   perspective: 1000px;
 }
 .card-inner{
   box-shadow: 5px 5px 10px -10px black;
-  transform: rotateY(0deg);
+  transform: rotateY(180deg);
   border: solid black 2px;
   height: 100%;
   transition: transform 0.6s;
@@ -66,13 +66,27 @@ body {
 }
 
 .card-back {
-  background-color: #944a37;
+  background: url("./img/dark-paths.webp") no-repeat fixed center;
+  background-size: cover;
   color: white;
   transform: rotateY(180deg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.card-back:hover img{
+  width: 80%;
+  height: 80%;
+}
+.card-back img {
+  pointer-events: none;
+  width: 50%;
+  height: 50%;
+  background-size: cover;
+  transition: all 1s;
 }
 
 .img{
-  /* user-select: none; */
   max-width: 92%;
   max-height: 95%;
   border: 1px solid white ;
