@@ -16,13 +16,13 @@ export default function Game() {
 
   useEffect(()=>{
     window.location.hash = hash
-    window.addEventListener("hashchange", ()=> {
+    window.addEventListener("hashchange", ()=> { // --- Maintain window hash
       setHash(window.location.hash.slice(1))
     })
   }, [])
 
   useEffect(() => {
-    async function fetchCard() {
+    async function fetchCard() { // --- Get images from Pixabay
       setCardBank(Array.from(document.getElementsByClassName("img")))
       let page = Math.ceil(Math.random()*4);
       fetch(`https://pixabay.com/api/?key=35904460-6da0f483724d8177c3f681e67&q=${hash}&orientation=horizontal&per_page=50&page=${page}`)
@@ -34,7 +34,7 @@ export default function Game() {
         fetchCard()
       }, [hash])
 
-    useEffect(() => { // --- Once image bank fills up we set 2 images with to same index.
+    useEffect(() => { // --- Once image bank fills up we set 2 images with to same index of picbank.
       if(picBank.length === 50 ){
         let cb = [];
         for (let i = 0; i < 15; i++) {
@@ -44,7 +44,7 @@ export default function Game() {
           } else {
             console.log("halt") // --- If we didn't get an image.
             setTimeout(() => {
-              reset()
+              setHash(hash)
             }, 1000);
           }
         }
