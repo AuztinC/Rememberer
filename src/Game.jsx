@@ -20,7 +20,7 @@ export default function Game() {
   useEffect(() => {
     async function fetchCard() {
       setCardBank(Array.from(document.getElementsByClassName("img")))
-      let page = Math.ceil(Math.random()*2);
+      let page = Math.ceil(Math.random()*4);
       fetch(`https://pixabay.com/api/?key=35904460-6da0f483724d8177c3f681e67&q=${input.val}&orientation=horizontal&per_page=15&page=${page}`)
           .then((response) => response.json())
           .then((data) => {
