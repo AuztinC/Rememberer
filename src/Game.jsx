@@ -7,7 +7,7 @@ import Card from './Card'
 // timer?
 
 export default function Game() {
-  const [hash, setHash] = useState("kittens")
+  const [hash, setHash] = useState(window.location.hash.slice(1))
   const [active, setActive] = useState([])
   const [inGame, setInGame] = useState(true)
   const [picBank, setPicBank] = useState([])
@@ -16,9 +16,11 @@ export default function Game() {
 
   useEffect(()=>{
     window.location.hash = hash
-    window.addEventListener("hashchange", ()=> { // --- Maintain window hash
+    function startHash(){ // --- Maintain window hash
       setHash(window.location.hash.slice(1))
-    })
+    }
+    window.addEventListener("hashchange", startHash)
+    return () => window.removeEventListener("hashchange", startHash)
   }, [])
 
   useEffect(() => {
@@ -59,13 +61,10 @@ export default function Game() {
       }
   }, [picBank])
 
-  let correctCards = []
   useEffect(() =>{ //    --- Compare cards currently in Active array
     if(active.length === 2){
       if(active[0].className === active[1].className){ // --- Match!
         score.current = score.current + 2
-        correctCards.push(...correctCards, active[0], active[1])
-        console.log(correctCards)
         setActive([])
         if(score.current === 30){ // --- WINNER
           setInGame(false)
@@ -96,9 +95,11 @@ export default function Game() {
       e.style.transform = "rotateY(180deg)"
     })
     setTimeout(()=>{
-      window.location.hash = `${ev.target.input.value}`
-      ev.target.input.placeholder = ev.target.input.value
-      ev.target.input.value = ""
+      if(ev.target.input.value !== ""){
+        window.location.hash = `${ev.target.input.value}`
+        ev.target.input.placeholder = ev.target.input.value
+        ev.target.input.value = ""
+      } else setHash(ev.target.input.value)
     }, 700)
   }
 

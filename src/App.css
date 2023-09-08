@@ -75,10 +75,7 @@ body {
   justify-content: center;
   align-items: center;
 }
-.correct{
-  width: 120%;
-  height: 150%;
-}
+
 .card-back:hover img{
   width: 80%;
   height: 80%;
