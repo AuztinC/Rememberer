@@ -1,13 +1,9 @@
 import React, {useState, useEffect, useRef} from 'react'
 import Card from './Card'
-
-//      --- TODOS ---     //
-
-// create final game state
-// timer?
+import Dropdown from './Dropdown'
 
 export default function Game() {
-  const [hash, setHash] = useState(window.location.hash.slice(1))
+  const [hash, setHash] = useState({hash: window.location.hash.slice(1)})
   const [active, setActive] = useState([])
   const [inGame, setInGame] = useState(true)
   const [picBank, setPicBank] = useState([])
@@ -15,9 +11,9 @@ export default function Game() {
   let score = useRef(0)
 
   useEffect(()=>{
-    window.location.hash = hash
     function startHash(){ // --- Maintain window hash
-      setHash(window.location.hash.slice(1))
+      setHash({hash: window.location.hash.slice(1)})
+      setPicBank([])
     }
     window.addEventListener("hashchange", startHash)
     return () => window.removeEventListener("hashchange", startHash)
@@ -27,7 +23,7 @@ export default function Game() {
     async function fetchCard() { // --- Get images from Pixabay
       setCardBank(Array.from(document.getElementsByClassName("img")))
       let page = Math.ceil(Math.random()*4);
-      fetch(`https://pixabay.com/api/?key=35904460-6da0f483724d8177c3f681e67&q=${hash}&orientation=horizontal&per_page=50&page=${page}`)
+      fetch(`https://pixabay.com/api/?key=35904460-6da0f483724d8177c3f681e67&q=${hash.hash}&orientation=horizontal&per_page=50&page=${page}&safesearch=true`)
           .then((response) => response.json())
           .then((data) => {
             setPicBank(data.hits)
@@ -36,19 +32,25 @@ export default function Game() {
         fetchCard()
       }, [hash])
 
-    useEffect(() => { // --- Once image bank fills up we set 2 images with to same index of picbank.
-      if(picBank.length === 50 ){
-        let cb = [];
-        for (let i = 0; i < 15; i++) {
-          let curRan = picBank[Math.floor(Math.random() * (picBank.length - 1) )]
-          if(curRan !== undefined){
-            cb.push(...[{img: curRan.largeImageURL, id: curRan.id}, {img: curRan.largeImageURL, id: curRan.id}])
-          } else {
-            console.log("halt") // --- If we didn't get an image.
-            setTimeout(() => {
-              setHash(hash)
-            }, 1000);
-          }
+      useEffect(() => { // --- Once image bank fills up we set 2 images with to same index of picbank.
+        // console.log(picBank.length===0)
+        if( picBank ){ // I want to check for duplicate images in my cb
+          let cb = [];
+          for (let i = 0; i < 15; i++) {
+            let curRan = picBank[Math.floor(Math.random() * (picBank.length - 1) )]
+            const dup = cb.find(cb=>cb.img === curRan.largeImageURL)
+            if(dup) {
+              i--
+              continue
+            }
+            if(curRan !== undefined){
+              cb.push(...[{img: curRan.largeImageURL, id: curRan.id}, {img: curRan.largeImageURL, id: curRan.id}])
+            } else {
+              console.log("halt") // --- If we didn't get an image.
+              setTimeout(() => {
+                setHash(hash)
+              }, 1000);
+            }
         }
         for (let i = 0; i < 3; i++) { // --- Shuffle our cards.
             let tempArr = cb
@@ -95,23 +97,27 @@ export default function Game() {
       e.style.transform = "rotateY(180deg)"
     })
     setTimeout(()=>{
-      if(ev.target.input.value !== ""){
-        window.location.hash = `${ev.target.input.value}`
-        ev.target.input.placeholder = ev.target.input.value
-        ev.target.input.value = ""
-      } else setHash(ev.target.input.value)
+      // if(ev.target.input.value !== ""){
+      //   window.location.hash = `${ev.target.input.value}`
+      //   ev.target.input.placeholder = ev.target.input.value
+      //   ev.target.input.value = ""
+      // } else setHash({hash})
+      setHash({hash})
     }, 700)
   }
 
+  const pic = picBank.find(pic => pic)
+  console.log(!pic)
   return (<>
     <form id="form" onSubmit={handleSubmit} >
       <button >New Game</button>
       <label  htmlFor="input">Choose Your Images!</label>
-      <input  type="text" placeholder={hash} name="input" id="input"/>
+      {/* <input  type="text" placeholder={hash.hash} name="input" id="input" defaultValue={hash.hash}/> */}
     </form>
+      <Dropdown />
 
     <div id='game'>
-      { cardBank.map((card) => {
+      { !pic ? <h1>Loading...</h1> : cardBank.map((card) => {
         return <>
           <Card id={card.id} img={card.img} active={active} setActive={setActive}/>
         </>

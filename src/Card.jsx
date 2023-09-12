@@ -17,7 +17,7 @@ export default function Card({ setActive, active, img, id }) {
   useEffect(()=>{
     setTimeout(()=>{
       setClicked(false)
-    }, 700)
+    }, 300)
   }, [clicked])
 
   return <>
