@@ -1,6 +1,9 @@
 import React, {useState, useEffect, useRef} from 'react'
 import Card from './Card'
 import Dropdown from './Dropdown'
+import PlayerStats from './PlayerStats'
+
+
 
 export default function Game() {
   const [hash, setHash] = useState({hash: window.location.hash.slice(1)})
@@ -46,7 +49,7 @@ export default function Game() {
             if(curRan !== undefined){
               cb.push(...[{img: curRan.largeImageURL, id: curRan.id}, {img: curRan.largeImageURL, id: curRan.id}])
             } else {
-              console.log("halt") // --- If we didn't get an image.
+              // console.log("halt") // --- If we didn't get an image.
               setTimeout(() => {
                 setHash(hash)
               }, 1000);
@@ -97,25 +100,19 @@ export default function Game() {
       e.style.transform = "rotateY(180deg)"
     })
     setTimeout(()=>{
-      // if(ev.target.input.value !== ""){
-      //   window.location.hash = `${ev.target.input.value}`
-      //   ev.target.input.placeholder = ev.target.input.value
-      //   ev.target.input.value = ""
-      // } else setHash({hash})
       setHash({hash})
     }, 700)
   }
 
   const pic = picBank.find(pic => pic)
-  console.log(!pic)
   return (<>
-    <form id="form" onSubmit={handleSubmit} >
-      <button >New Game</button>
-      <label  htmlFor="input">Choose Your Images!</label>
-      {/* <input  type="text" placeholder={hash.hash} name="input" id="input" defaultValue={hash.hash}/> */}
-    </form>
+      <PlayerStats />
+      <form id="form" onSubmit={handleSubmit} >
+        <button >New Game</button>
+        <label  htmlFor="input">Choose Your Images!</label>
+        {/* <input  type="text" placeholder={hash.hash} name="input" id="input" defaultValue={hash.hash}/> */}
+      </form>
       <Dropdown />
-
     <div id='game'>
       { !pic ? <h1>Loading...</h1> : cardBank.map((card) => {
         return <>

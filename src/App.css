@@ -14,17 +14,26 @@ body {
   align-items: center;
   font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif ;
 }
-
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-track {
+  background: #c00000;
+}
+::-webkit-scrollbar-thumb {
+  background: #5f0404;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #682020;
+}
 .App {
   border-radius: 5px;
   border: 10px orangered ridge;
   width: 80vw;
   height: 95vh;
-  /* padding-bottom: 32px; */
 }
 
 #game {
-  /* z-index: -1; */
   position: relative;
   background: url("./img/serious-white.png");
   width: 100%;
@@ -99,83 +108,107 @@ body {
   height: 5%;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   font-size: 1.5rem;
   font-weight: bolder;
   text-shadow: 1px 1px 2px orange;
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
-.dropdown {
-  position: relative;
-  display: inline-block;
-  padding-left: 20px;
-}
-@keyframes dropdown{
-  0% {height: 0px}
-  100%{height:100%}
-}
-.dropdown-menu{
+
+.catBtn{
   width: 100%;
-  overflow: hidden;
-  display: none;
-  margin: 0;
-  padding: 0;
+}
+.catCont{
   text-align: center;
-  top: 29px;
-  position: absolute;
-  background-color: orange;
   z-index: 5;
-  list-style-type: none;
+  position: relative;
 }
-.dropdown-menu li{
-  margin: 0;
-  width: 100%;
-  padding: 5px 10px 5px 10px;
-}
-.dropdown-menu a{
-  /* width: 100%; */
-  color: black;
-  text-decoration: none;
-}
-.dropdown-menu li:hover{
-  border: 1px solid black;
-}
-.dropdown-submenu{
-  display: hidden;
-}
-.navToggle{
-  overflow: visible;
-  display: block;
-  animation: dropdown .3s;
-}
-.menu-show{
-  display: block;
-  position: absolute;
-  background-color: rgb(209, 136, 0);
-}
-.submenu{
-  display:none;
-  text-align: center;
-  list-style-type: none;
-}
-.submenu-show{
-  display: block;
-  position: absolute;
-  right: 100px;
-  background-color: rgb(209, 136, 0);
+.downArrow{
+  position: relative;
+  top: 2px;
+  left: 5px;
+  height: 15px;
+  width: 15px;
 }
 
+.dropdown {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 30px;
+  right: 0px;
+  width: 100%;
+  background-color: orange;
+  border-radius: 2px;
+  overflow: hidden;
+  transition: height .5s ease;
+}
+.menu{
+  width: 100%;
+}
+.menu-icon{
+  position: absolute;
+  margin-left: 20%;
+  top: 8px;
+  height: 15px;
+  width: 15px;
+}
+.menu-item{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: Black;
+  text-decoration: none;
+  width: 100%;
+  padding: .5rem;
+  transition: all .3s;
+}
+.menu-item:hover{
+  border: 1px solid black;
+  background-color: rgb(255, 189, 67);
+}
+.menu-primary-enter{
+  position: absolute;
+  transform: translateX(-110%);
+}
+.menu-primary-enter-active{
+  transform: translateX(0%);
+  transition: all .5s ease;
+}
+.menu-primary-exit{
+}
+.menu-primary-exit-active{
+  transform: translateX(-110%);
+  transition: all .5s ease;
+}
+.menu-secondary-enter{
+  position: absolute;
+  transform: translateX(110%);
+}
+.menu-secondary-enter-active{
+  transform: translateX(0%);
+  transition: all .5s ease;
+}
+.menu-secondary-exit{
+}
+.menu-secondary-exit-active{
+  transform: translateX(110%);
+  transition: all .5s ease;
+}
 #input{
   max-width: 150px;
   margin-left: 20px;
   border: 2px solid black;
 }
 button{
+  font-family: inherit;
   border-radius: 2px;
   border: 2px solid grey;
-  color: white;
-  background-color: rgb(0, 0, 0);
+  color: black;
+  background-color: rgb(194, 194, 194);
   margin-right: 20px;
   padding: 5px 10px 5px 10px;
   transition: all .5s;
@@ -185,6 +218,8 @@ button:hover{
   background-color: orange;
   border: 2px solid black;
 }
+
+
 
 @media screen and (max-width: 700px){
   .App{
