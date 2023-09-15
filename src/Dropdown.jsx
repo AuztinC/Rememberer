@@ -21,17 +21,36 @@ function DropdownMenu({ setOpen }) {
     }
 
     function DropdownItem(props){
-        return (
-            <a href="./#"
-            className="menu-item"
-            onClick={()=> {
-                props.goToMenu && setActiveMenu(props.goToMenu)
+        return (<>
+            {
+                props.dropdown ? (
+                    <div
+                    className="menu-item"
+                    onClick={()=> {
+                        props.goToMenu && setActiveMenu(props.goToMenu)
+                        }}>
+                        <span className="icon-arrow">{props.lefticon}</span>
+                        {props.children}
+                        <span className="icon-arrow">{props.righticon}</span>
+                    </div>
+                ) :
+                <a href={`#${props.children.toLowerCase()}`}
+                className="menu-item"
+                onClick={()=> {
+                    props.goToMenu && setActiveMenu(props.goToMenu)
                 }}>
-                {props.children}
-                <span className="icon-arrow">{props.icon}</span>
-            </a>
-        )
+                        <span className="icon-arrow">{props.icon}</span>
+                    {props.children}
+                </a>
+            }
+
+        </>)
     }
+
+
+    // backgrounds, fashion, nature, science, education, feelings, health, people, religion, places, animals, industry, computer, food, sports, transportation, travel, buildings, business, music
+
+    //animals,backgrounds,buildings,business,computer,education,fashion,feelings,food,health,industry,music,nature,people,places,religion,science,sports,transportation,travel
 
     return (
         <div className="dropdown" style={{ height: menuHeight }}>
@@ -42,21 +61,26 @@ function DropdownMenu({ setOpen }) {
             onEnter={calcHeight}
             >
                 <div className="menu">
-                    <DropdownItem icon={<ArrowRight/>} goToMenu="animals"> HELLO</DropdownItem>
-                    <DropdownItem> HELLO</DropdownItem>
-                    <DropdownItem> HELLO</DropdownItem>
-                    <DropdownItem> HELLO</DropdownItem>
-                    <DropdownItem> HELLO</DropdownItem>
-                    <DropdownItem> HELLO</DropdownItem>
-                    <DropdownItem> HELLO</DropdownItem>
-                    <DropdownItem> HELLO</DropdownItem>
-                    <DropdownItem> HELLO</DropdownItem>
-                    <DropdownItem> HELLO</DropdownItem>
-                    <DropdownItem> HELLO</DropdownItem>
-                    <DropdownItem> HELLO</DropdownItem>
-                    <DropdownItem> HELLO</DropdownItem>
-                    <DropdownItem> HELLO</DropdownItem>
-                    <DropdownItem> HELLO</DropdownItem>
+                    <DropdownItem dropdown={true} righticon={<ArrowRight/>} goToMenu="animals"> Animals</DropdownItem>
+                    <DropdownItem>Backgrounds</DropdownItem>
+                    <DropdownItem>Buildings</DropdownItem>
+                    <DropdownItem>Business</DropdownItem>
+                    <DropdownItem>Computer</DropdownItem>
+                    <DropdownItem>Education</DropdownItem>
+                    <DropdownItem>Fashion</DropdownItem>
+                    <DropdownItem>Feelings</DropdownItem>
+                    <DropdownItem>Food</DropdownItem>
+                    <DropdownItem>Health</DropdownItem>
+                    <DropdownItem>Industry</DropdownItem>
+                    <DropdownItem>Music</DropdownItem>
+                    <DropdownItem>Nature</DropdownItem>
+                    <DropdownItem>People</DropdownItem>
+                    <DropdownItem>Places</DropdownItem>
+                    <DropdownItem>Religion</DropdownItem>
+                    <DropdownItem>Science</DropdownItem>
+                    <DropdownItem>Sports</DropdownItem>
+                    <DropdownItem>Transportation</DropdownItem>
+                    <DropdownItem>Travel</DropdownItem>
                 </div>
             </CSSTransition>
 
@@ -67,18 +91,22 @@ function DropdownMenu({ setOpen }) {
             onEnter={calcHeight}
             >
                 <div className="menu">
-                    <DropdownItem icon={<ArrowRight/>}> HELLO</DropdownItem>
-                    <DropdownItem goToMenu={"main"}> HELLO</DropdownItem>
-                    <DropdownItem> HELLO</DropdownItem>
-                    <DropdownItem> HELLO</DropdownItem>
+                    <DropdownItem goToMenu={"main"} dropdown={true} lefticon={<ArrowLeft/>}> Back</DropdownItem>
+                    <DropdownItem>Dogs</DropdownItem>
+                    <DropdownItem>Cats</DropdownItem>
+                    <DropdownItem>Horses</DropdownItem>
+                    <DropdownItem>Pigs</DropdownItem>
+                    <DropdownItem>Pandas</DropdownItem>
+                    <DropdownItem>Farm Animals</DropdownItem>
+                    <DropdownItem>Zoo Animals</DropdownItem>
+                    <DropdownItem>Wild Animals</DropdownItem>
                 </div>
             </CSSTransition>
         </div>
     )
 }
 
-const Dropdown = ()=> {
-    const [open, setOpen] = useState(false)
+const Dropdown = ({ open, setOpen })=> {
 
     return (<>
         <div className="catCont">
@@ -93,4 +121,3 @@ const Dropdown = ()=> {
 export default Dropdown
 
 
-// backgrounds, fashion, nature, science, education, feelings, health, people, religion, places, animals, industry, computer, food, sports, transportation, travel, buildings, business, music

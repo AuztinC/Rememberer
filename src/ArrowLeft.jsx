@@ -3,33 +3,18 @@ import * as React from "react"
 function ArrowLeft(props) {
   return (
     <svg
+      className="menu-icon arrowleft"
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 60 60"
-      y={0}
-      x={0}
+      width="580px"
+      height="423px"
+      viewBox="0 0 5800 4230"
       {...props}
     >
-      <g strokeLinejoin="round" strokeLinecap="round">
-        <g stroke="#fff" strokeWidth={10} fill="none">
-          <path
-            d="M6.943 30h47.433M17.615 20.907L5.624 30l11.991 9.093V20.907zM30.77 20.907L18.779 30l11.991 9.093V20.907z"
-            transform="matrix(-1 0 0 1 60 0)"
-          />
-        </g>
-        <g stroke="#000" strokeWidth={5.3869}>
-          <path
-            d="M4.859 31.749h51.103"
-            fill="none"
-            transform="matrix(-1 0 0 1 60 0) translate(2.433 .532) scale(.92817)"
-          />
-          <g fillRule="evenodd" fill="#000">
-            <path
-              d="M16.357 21.952l-12.92 9.797 12.92 9.797V21.952zM30.53 21.952l-12.919 9.797 12.919 9.796V21.952z"
-              transform="matrix(-1 0 0 1 60 0) translate(2.433 .532) scale(.92817)"
-            />
-          </g>
-        </g>
-      </g>
+      <path
+        d="M3160 4091c-25-4-99-35-166-68-157-80-855-505-1499-912-477-303-530-334-837-487l-328-164-60-119c-52-106-60-129-66-198-6-76-5-81 29-148 67-131 116-168 492-365 182-96 544-298 805-450s599-348 750-435c151-88 379-226 505-309 186-121 255-160 359-203 71-29 134-53 140-53s39 22 73 48 73 55 86 64c34 24 45 93 54 343l8 210 890 5 890 5 111 73c107 69 114 76 164 158 93 152 89 92 85 1129l-3 905-48 77c-26 43-74 108-106 144-54 62-64 69-148 99l-90 33-864-8c-558-5-866-4-869 2-4 6-11 124-17 264l-11 254-30 47c-28 44-33 47-93 57-68 12-134 12-206 2z"
+        fill="#000"
+        stroke="none"
+      />
     </svg>
   )
 }

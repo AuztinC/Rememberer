@@ -3,7 +3,7 @@ import * as React from "react"
 function ArrowRight(props) {
   return (
     <svg
-      className="menu-icon"
+      className="menu-icon arrowright"
       xmlns="http://www.w3.org/2000/svg"
       x="0px"
       y="0px"

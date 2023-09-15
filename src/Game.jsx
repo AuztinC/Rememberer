@@ -11,6 +11,9 @@ export default function Game() {
   const [inGame, setInGame] = useState(true)
   const [picBank, setPicBank] = useState([])
   const [cardBank, setCardBank] = useState([])
+  const [open, setOpen] = useState(false)
+  const [moves, setMoves] = useState(0)
+  const [timer, setTimer] = useState(0)
   let score = useRef(0)
 
   useEffect(()=>{
@@ -23,6 +26,7 @@ export default function Game() {
   }, [])
 
   useEffect(() => {
+    setOpen(false)
     async function fetchCard() { // --- Get images from Pixabay
       setCardBank(Array.from(document.getElementsByClassName("img")))
       let page = Math.ceil(Math.random()*4);
@@ -68,6 +72,7 @@ export default function Game() {
 
   useEffect(() =>{ //    --- Compare cards currently in Active array
     if(active.length === 2){
+      setMoves(moves + 1)
       if(active[0].className === active[1].className){ // --- Match!
         score.current = score.current + 2
         setActive([])
@@ -87,33 +92,31 @@ export default function Game() {
 
   function handleSubmit(event){
     event.preventDefault()
+
+  }
+  function reset(){
     if(inGame){
       if(window.confirm("This will reset your current game!")){
-        reset(event)
+
+        Array.from(document.getElementsByClassName("card-inner")).forEach((e)=>{
+          e.style.transform = "rotateY(180deg)"
+        })
+        setTimeout(()=>{
+          setHash({hash: hash.hash})
+          setOpen(false)
+        }, 700)
       } else return
-    } else {
-      reset(event)
     }
-  }
-  function reset(ev){
-    Array.from(document.getElementsByClassName("card-inner")).forEach((e)=>{
-      e.style.transform = "rotateY(180deg)"
-    })
-    setTimeout(()=>{
-      setHash({hash})
-    }, 700)
   }
 
   const pic = picBank.find(pic => pic)
   return (<>
-      <PlayerStats />
       <form id="form" onSubmit={handleSubmit} >
-        <button >New Game</button>
-        <label  htmlFor="input">Choose Your Images!</label>
-        {/* <input  type="text" placeholder={hash.hash} name="input" id="input" defaultValue={hash.hash}/> */}
+        <button onClick={reset}>New Game</button>
       </form>
-      <Dropdown />
-    <div id='game'>
+      <Dropdown open={open} setOpen={setOpen}/>
+      <PlayerStats moves={moves}/>
+    <div id='gameBox'>
       { !pic ? <h1>Loading...</h1> : cardBank.map((card) => {
         return <>
           <Card id={card.id} img={card.img} active={active} setActive={setActive}/>
