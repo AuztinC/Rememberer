@@ -8,26 +8,47 @@ import PlayerStats from './PlayerStats'
 export default function Game() {
   const [hash, setHash] = useState({hash: window.location.hash.slice(1)})
   const [active, setActive] = useState([])
-  const [inGame, setInGame] = useState(true)
+  const [inGame, setInGame] = useState(false)
   const [picBank, setPicBank] = useState([])
   const [cardBank, setCardBank] = useState([])
   const [open, setOpen] = useState(false)
   const [moves, setMoves] = useState(0)
-  const [bestMoves, setBestMoves] = useState(window.localStorage.getItem("bestMoves") || 0)
-  const [bestTime, setBestTime] = useState(window.localStorage.getItem("bestTime") || {hour: "00", minute: "00", second: "00"})
-  const [timer, setTimer] = useState({hour: "00", minute: "00", second: "00"})
+  const [bestMoves, setBestMoves] = useState(window.localStorage.getItem("best_moves") || 0)
+  const bestTime = window.localStorage.getItem("best_time")*1
   let score = useRef(0)
-
+  const bestDate = new Date();
+  bestDate.setHours(0);
+  bestDate.setMinutes(0);
+  bestDate.setSeconds(0 || bestTime);
+  const [bestDateTime, setBestDateTime] = useState({ bestDate })
+  let date = new Date();
+  date.setHours(0);
+  date.setMinutes(0);
+  date.setSeconds(0);
+  const [timer, setTimer] = useState({ date })
+  
+  const currentTimer = useRef()
+  
   useEffect(()=>{
     function startHash(){ // --- Maintain window hash
       setHash({hash: window.location.hash.slice(1)})
       setPicBank([])
     }
     window.addEventListener("hashchange", startHash)
-    return () => window.removeEventListener("hashchange", startHash)
+    return () => {
+      clearInterval(currentTimer.current)
+      window.removeEventListener("hashchange", startHash)
+    }
   }, [])
-
+  
+  
   useEffect(() => {
+    date.setHours(0);
+    date.setMinutes(0);
+    date.setSeconds(0);
+    setTimer({ date })
+    clearInterval(currentTimer.current)
+    setInGame(false)
     setMoves(0)
     setOpen(false)
     async function fetchCard() { // --- Get images from Pixabay
@@ -75,14 +96,24 @@ export default function Game() {
 
   useEffect(() =>{ //    --- Compare cards currently in Active array
     if(active.length === 2){
-      if(moves === 0){
-      }
       setMoves(moves + 1)
       if(active[0].className === active[1].className){ // --- Match!
         score.current = score.current + 2
         setActive([])
         if(score.current === 30){ // --- WINNER
           setInGame(false)
+          const currentTime = ( ((timer.date.getHours()*60) + timer.date.getMinutes()) * 60 + timer.date.getSeconds())
+          if(currentTime < bestTime){
+            window.localStorage.setItem("best_time", currentTime)
+            bestDate.setHours(0)
+            bestDate.setMinutes(0)
+            bestDate.setSeconds(currentTime)
+            setBestDateTime( { bestDate } )
+          }
+          if(moves > bestMoves){
+            window.localStorage.setItem("best_moves", moves)
+            setBestMoves(moves)
+          }
         }
       } else {
         setTimeout(()=>{ // --- No match
@@ -94,8 +125,23 @@ export default function Game() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [active])
-
-
+  
+  useEffect(()=>{
+    if(inGame){
+      startTimer()
+    } else {
+      clearInterval(currentTimer.current);
+    }
+  }, [inGame])
+  
+  function startTimer(){
+      currentTimer.current = setInterval(()=>{
+        date.setSeconds(date.getSeconds() + 1)
+        setTimer({date})
+        // console.log(date)
+      }, 1000)
+  }
+  
   function handleSubmit(event){
     event.preventDefault()
 
@@ -121,11 +167,11 @@ export default function Game() {
         <button onClick={reset}>New Game</button>
       </form>
       <Dropdown open={open} setOpen={setOpen}/>
-      <PlayerStats moves={moves} bestMoves={bestMoves} timer={timer} bestTime={bestTime}/>
+      <PlayerStats bestDateTime={bestDateTime} moves={moves} bestMoves={bestMoves} timer={timer}/>
     <div id='gameBox'>
       { !pic ? <h1>Loading...</h1> : cardBank.map((card) => {
         return (
-          <Card id={card.id} img={card.img} active={active} setActive={setActive}/>
+          <Card setInGame={setInGame} moves={moves} startTimer={startTimer} id={card.id} img={card.img} active={active} setActive={setActive}/>
         )
       }) }
     </div>

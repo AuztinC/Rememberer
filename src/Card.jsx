@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import QuestionMark from './img/OrangeQuestion.png'
 
-export default function Card({ setActive, active, img, id }) {
+export default function Card({ setInGame, moves, startTimer, setActive, active, img, id }) {
   const [clicked, setClicked] = useState(false)
     //    --- Add clicked card to "Active" array for comparing
   function handleClick(event){
     if(!clicked){
+      if (moves === 0 && active.length < 1) {
+        setInGame(true)
+      }
       if(active.length < 2){
         event.target.parentElement.style.transform = "rotateY(0deg)"
         setActive(prev => [...prev, event.target])
@@ -19,6 +22,8 @@ export default function Card({ setActive, active, img, id }) {
     }, 300)
   }, [clicked])
 
+  
+  
   return (
     <div className="card" key={id}>
       <div className="card-inner">
