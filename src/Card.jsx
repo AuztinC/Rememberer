@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import QuestionMark from './img/OrangeQuestion.png'
 
 export default function Card({ setActive, active, img, id }) {
-
   const [clicked, setClicked] = useState(false)
     //    --- Add clicked card to "Active" array for comparing
   function handleClick(event){
@@ -20,16 +19,16 @@ export default function Card({ setActive, active, img, id }) {
     }, 300)
   }, [clicked])
 
-  return <>
+  return (
     <div className="card" key={id}>
-      <div className="card-inner" key={id}>
-        <div className="card-front" key={id}>
-          <img className="img" alt="card" src={img} key={id}/>
+      <div className="card-inner">
+        <div className="card-front" >
+          <img className="img" alt="card" src={img} />
         </div>
         <div className={`card-back ${id}`} onClick={handleClick}>
           <img src={QuestionMark} alt="?" />
         </div>
       </div>
     </div>
-    </>
+  )
 }

@@ -13,7 +13,9 @@ export default function Game() {
   const [cardBank, setCardBank] = useState([])
   const [open, setOpen] = useState(false)
   const [moves, setMoves] = useState(0)
-  const [timer, setTimer] = useState(0)
+  const [bestMoves, setBestMoves] = useState(window.localStorage.getItem("bestMoves") || 0)
+  const [bestTime, setBestTime] = useState(window.localStorage.getItem("bestTime") || {hour: "00", minute: "00", second: "00"})
+  const [timer, setTimer] = useState({hour: "00", minute: "00", second: "00"})
   let score = useRef(0)
 
   useEffect(()=>{
@@ -26,6 +28,7 @@ export default function Game() {
   }, [])
 
   useEffect(() => {
+    setMoves(0)
     setOpen(false)
     async function fetchCard() { // --- Get images from Pixabay
       setCardBank(Array.from(document.getElementsByClassName("img")))
@@ -72,6 +75,8 @@ export default function Game() {
 
   useEffect(() =>{ //    --- Compare cards currently in Active array
     if(active.length === 2){
+      if(moves === 0){
+      }
       setMoves(moves + 1)
       if(active[0].className === active[1].className){ // --- Match!
         score.current = score.current + 2
@@ -90,6 +95,7 @@ export default function Game() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [active])
 
+
   function handleSubmit(event){
     event.preventDefault()
 
@@ -97,7 +103,6 @@ export default function Game() {
   function reset(){
     if(inGame){
       if(window.confirm("This will reset your current game!")){
-
         Array.from(document.getElementsByClassName("card-inner")).forEach((e)=>{
           e.style.transform = "rotateY(180deg)"
         })
@@ -106,6 +111,7 @@ export default function Game() {
           setOpen(false)
         }, 700)
       } else return
+
     }
   }
 
@@ -115,12 +121,12 @@ export default function Game() {
         <button onClick={reset}>New Game</button>
       </form>
       <Dropdown open={open} setOpen={setOpen}/>
-      <PlayerStats moves={moves}/>
+      <PlayerStats moves={moves} bestMoves={bestMoves} timer={timer} bestTime={bestTime}/>
     <div id='gameBox'>
       { !pic ? <h1>Loading...</h1> : cardBank.map((card) => {
-        return <>
+        return (
           <Card id={card.id} img={card.img} active={active} setActive={setActive}/>
-        </>
+        )
       }) }
     </div>
 
