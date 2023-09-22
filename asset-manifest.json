@@ -1,18 +1,18 @@
 {
   "files": {
     "main.css": "/Rememberer/static/css/main.bb9e23a8.css",
-    "main.js": "/Rememberer/static/js/main.dc7f015a.js",
+    "main.js": "/Rememberer/static/js/main.17df2afd.js",
     "static/js/787.9a9be24f.chunk.js": "/Rememberer/static/js/787.9a9be24f.chunk.js",
     "static/media/OrangeQuestion.png": "/Rememberer/static/media/OrangeQuestion.eec4eac2c659b5bf2c48.png",
     "static/media/oriental-tiles.png": "/Rememberer/static/media/oriental-tiles.eb925fbd4b61c241aacd.png",
     "static/media/dark-paths.webp": "/Rememberer/static/media/dark-paths.924de6016b7040c4ba3c.webp",
     "index.html": "/Rememberer/index.html",
     "main.bb9e23a8.css.map": "/Rememberer/static/css/main.bb9e23a8.css.map",
-    "main.dc7f015a.js.map": "/Rememberer/static/js/main.dc7f015a.js.map",
+    "main.17df2afd.js.map": "/Rememberer/static/js/main.17df2afd.js.map",
     "787.9a9be24f.chunk.js.map": "/Rememberer/static/js/787.9a9be24f.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.bb9e23a8.css",
-    "static/js/main.dc7f015a.js"
+    "static/js/main.17df2afd.js"
   ]
 }
