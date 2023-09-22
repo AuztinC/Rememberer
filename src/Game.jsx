@@ -105,7 +105,7 @@ export default function Game() {
           setInGame(false)
           const currentTime = ( ((timer.date.getHours()*60) + timer.date.getMinutes()) * 60 + timer.date.getSeconds())
 
-          if(bestTime !== 0 || currentTime < bestTime){
+          if(bestTime === 0 || currentTime < bestTime){
             window.localStorage.setItem("best_time", currentTime)
             bestDate.setHours(0)
             bestDate.setMinutes(0)
