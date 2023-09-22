@@ -6,7 +6,7 @@ import { CSSTransition } from "react-transition-group"
 
 
 
-function DropdownMenu({ setOpen }) {
+function DropdownMenu() {
     const [activeMenu, setActiveMenu] = useState("main")
     const [menuHeight, setMenuHeight] = useState(null)
 

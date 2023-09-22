@@ -16,6 +16,7 @@ export default function Game() {
   const [bestMoves, setBestMoves] = useState(window.localStorage.getItem("best_moves") || 0)
   const bestTime = window.localStorage.getItem("best_time")*1
   let score = useRef(0)
+
   const bestDate = new Date();
   bestDate.setHours(0);
   bestDate.setMinutes(0);
@@ -26,9 +27,9 @@ export default function Game() {
   date.setMinutes(0);
   date.setSeconds(0);
   const [timer, setTimer] = useState({ date })
-  
+
   const currentTimer = useRef()
-  
+
   useEffect(()=>{
     function startHash(){ // --- Maintain window hash
       setHash({hash: window.location.hash.slice(1)})
@@ -40,8 +41,8 @@ export default function Game() {
       window.removeEventListener("hashchange", startHash)
     }
   }, [])
-  
-  
+
+
   useEffect(() => {
     date.setHours(0);
     date.setMinutes(0);
@@ -103,14 +104,15 @@ export default function Game() {
         if(score.current === 30){ // --- WINNER
           setInGame(false)
           const currentTime = ( ((timer.date.getHours()*60) + timer.date.getMinutes()) * 60 + timer.date.getSeconds())
-          if(currentTime < bestTime){
+
+          if(bestTime !== 0 || currentTime < bestTime){
             window.localStorage.setItem("best_time", currentTime)
             bestDate.setHours(0)
             bestDate.setMinutes(0)
             bestDate.setSeconds(currentTime)
             setBestDateTime( { bestDate } )
           }
-          if(moves > bestMoves){
+          if(bestMoves === 0 || moves < bestMoves){
             window.localStorage.setItem("best_moves", moves)
             setBestMoves(moves)
           }
@@ -125,7 +127,7 @@ export default function Game() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [active])
-  
+
   useEffect(()=>{
     if(inGame){
       startTimer()
@@ -133,7 +135,7 @@ export default function Game() {
       clearInterval(currentTimer.current);
     }
   }, [inGame])
-  
+
   function startTimer(){
       currentTimer.current = setInterval(()=>{
         date.setSeconds(date.getSeconds() + 1)
@@ -141,7 +143,7 @@ export default function Game() {
         // console.log(date)
       }, 1000)
   }
-  
+
   function handleSubmit(event){
     event.preventDefault()
 
