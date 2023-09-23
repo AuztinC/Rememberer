@@ -2,25 +2,28 @@ import React, {useState, useEffect, useRef} from 'react'
 import Card from './Card'
 import Dropdown from './Dropdown'
 import PlayerStats from './PlayerStats'
+import Difficulty from './Difficulty'
 
 
 
 export default function Game() {
-  const [hash, setHash] = useState({hash: window.location.hash.slice(1)})
+  console.log((window.location.hash.substring(window.location.hash.indexOf('=')+1, window.location.hash.length)*1))
+  const [difficulty, setDifficulty] = useState((window.location.hash.substring(window.location.hash.indexOf('=')+1, window.location.hash.length)*1) || 15)
+  const [hash, setHash] = useState({hash: `${window.location.hash.slice(1)}/d=${difficulty}`})
   const [active, setActive] = useState([])
   const [inGame, setInGame] = useState(false)
   const [picBank, setPicBank] = useState([])
   const [cardBank, setCardBank] = useState([])
   const [open, setOpen] = useState(false)
   const [moves, setMoves] = useState(0)
-  const [bestMoves, setBestMoves] = useState(window.localStorage.getItem("best_moves") || 0)
-  const bestTime = window.localStorage.getItem("best_time")*1
+  const [bestMoves, setBestMoves] = useState(window.localStorage.getItem(`${difficulty}/best_moves`) || 0)
+  const bestTime = window.localStorage.getItem(`${difficulty}/best_moves`)*1
   let score = useRef(0)
 
   const bestDate = new Date();
   bestDate.setHours(0);
   bestDate.setMinutes(0);
-  bestDate.setSeconds(0 || bestTime);
+  bestDate.setSeconds(bestTime || 0);
   const [bestDateTime, setBestDateTime] = useState({ bestDate })
   let date = new Date();
   date.setHours(0);
@@ -31,14 +34,10 @@ export default function Game() {
   const currentTimer = useRef()
 
   useEffect(()=>{
-    function startHash(){ // --- Maintain window hash
-      setHash({hash: window.location.hash.slice(1)})
-      setPicBank([])
-    }
-    window.addEventListener("hashchange", startHash)
+    window.addEventListener("hashchange", reset)
     return () => {
       clearInterval(currentTimer.current)
-      window.removeEventListener("hashchange", startHash)
+      window.removeEventListener("hashchange", reset)
     }
   }, [])
 
@@ -49,26 +48,27 @@ export default function Game() {
     date.setSeconds(0);
     setTimer({ date })
     clearInterval(currentTimer.current)
-    setInGame(false)
+
     setMoves(0)
     setOpen(false)
+
     async function fetchCard() { // --- Get images from Pixabay
       setCardBank(Array.from(document.getElementsByClassName("img")))
-      let page = Math.ceil(Math.random()*4);
-      fetch(`https://pixabay.com/api/?key=35904460-6da0f483724d8177c3f681e67&q=${hash.hash}&orientation=horizontal&per_page=50&page=${page}&safesearch=true`)
+      const page = Math.ceil(Math.random()*4);
+      const hashCategory = hash.hash.substring(0, hash.hash.indexOf('/'))
+      fetch(`https://pixabay.com/api/?key=35904460-6da0f483724d8177c3f681e67&q=${hashCategory}&orientation=horizontal&per_page=50&page=${page}&safesearch=true`)
           .then((response) => response.json())
           .then((data) => {
             setPicBank(data.hits)
           })
         }
         fetchCard()
-      }, [hash])
+      }, [hash, difficulty])
 
       useEffect(() => { // --- Once image bank fills up we set 2 images with to same index of picbank.
-        // console.log(picBank.length===0)
         if( picBank ){ // I want to check for duplicate images in my cb
           let cb = [];
-          for (let i = 0; i < 15; i++) {
+          for (let i = 0; i < difficulty; i++) {
             let curRan = picBank[Math.floor(Math.random() * (picBank.length - 1) )]
             const dup = cb.find(cb=>cb.img === curRan.largeImageURL)
             if(dup) {
@@ -80,7 +80,7 @@ export default function Game() {
             } else {
               // console.log("halt") // --- If we didn't get an image.
               setTimeout(() => {
-                setHash(hash)
+                // setHash(hash)
               }, 1000);
             }
         }
@@ -97,23 +97,22 @@ export default function Game() {
 
   useEffect(() =>{ //    --- Compare cards currently in Active array
     if(active.length === 2){
-      setMoves(moves + 1)
       if(active[0].className === active[1].className){ // --- Match!
         score.current = score.current + 2
         setActive([])
-        if(score.current === 30){ // --- WINNER
+        if(score.current === (difficulty*2)){ // --- WINNER
           setInGame(false)
           const currentTime = ( ((timer.date.getHours()*60) + timer.date.getMinutes()) * 60 + timer.date.getSeconds())
 
           if(bestTime === 0 || currentTime < bestTime){
-            window.localStorage.setItem("best_time", currentTime)
+            window.localStorage.setItem(`${difficulty}/best_moves`, currentTime)
             bestDate.setHours(0)
             bestDate.setMinutes(0)
             bestDate.setSeconds(currentTime)
             setBestDateTime( { bestDate } )
           }
           if(bestMoves === 0 || moves < bestMoves){
-            window.localStorage.setItem("best_moves", moves)
+            window.localStorage.setItem(`${difficulty}/best_moves`, moves)
             setBestMoves(moves)
           }
         }
@@ -124,11 +123,13 @@ export default function Game() {
           setActive([])
         }, 1000)
       }
+      setMoves(moves + 1)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [active])
 
   useEffect(()=>{
+    console.log(inGame)
     if(inGame){
       startTimer()
     } else {
@@ -144,10 +145,6 @@ export default function Game() {
       }, 1000)
   }
 
-  function handleSubmit(event){
-    event.preventDefault()
-
-  }
   function reset(){
     if(inGame){
       if(window.confirm("This will reset your current game!")){
@@ -155,21 +152,27 @@ export default function Game() {
           e.style.transform = "rotateY(180deg)"
         })
         setTimeout(()=>{
-          setHash({hash: hash.hash})
+          setPicBank([])
+          setHash({ hash: window.location.hash.slice(1), difficulty})
           setOpen(false)
+          setInGame(false)
         }, 700)
       } else return
-
+    } else {
+      setHash({hash: window.location.hash.slice(1), difficulty})
+      setPicBank([])
+      setInGame(false)
     }
   }
 
   const pic = picBank.find(pic => pic)
   return (<>
-      <form id="form" onSubmit={handleSubmit} >
-        <button onClick={reset}>New Game</button>
-      </form>
-      <Dropdown open={open} setOpen={setOpen}/>
+  <Difficulty setDifficulty={setDifficulty} hash={hash}/>
+      { inGame ? <button onClick={reset}>New Game</button> : null}
+      <Dropdown open={open} setOpen={setOpen} difficulty={difficulty}/>
+      {/* <button onClick={()=>score.current = 30}>win</button> */}
       <PlayerStats bestDateTime={bestDateTime} moves={moves} bestMoves={bestMoves} timer={timer}/>
+
     <div id='gameBox'>
       { !pic ? <h1>Loading...</h1> : cardBank.map((card) => {
         return (

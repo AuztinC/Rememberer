@@ -154,7 +154,7 @@ body {
   margin-left: 20px;
   width: 100%;
 }
-.catCont{
+.dropdownCont{
   text-align: center;
   z-index: 5;
   position: relative;
@@ -167,6 +167,16 @@ body {
   width: 15px;
 }
 
+.imageCat{
+  top: 36px;
+  left: 20px;
+  width: 100%;
+}
+
+.difficulty{
+
+}
+
 .dropdown {
   border: 1px solid black;
   display: flex;
@@ -174,9 +184,6 @@ body {
   justify-content: center;
   align-items: center;
   position: absolute;
-  top: 36px;
-  left: 20px;
-  width: 100%;
   background-color: orange;
   border-radius: 2px;
   overflow: hidden;

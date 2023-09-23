@@ -6,7 +6,7 @@ import { CSSTransition } from "react-transition-group"
 
 
 
-function DropdownMenu() {
+function DropdownMenu({ difficulty }) {
     const [activeMenu, setActiveMenu] = useState("main")
     const [menuHeight, setMenuHeight] = useState(null)
 
@@ -34,7 +34,7 @@ function DropdownMenu() {
                         <span className="icon-arrow">{props.righticon}</span>
                     </div>
                 ) :
-                <a href={`#${props.children.toLowerCase()}`}
+                <a href={`#${props.children.toLowerCase()}/d=${props.difficulty}`}
                 className="menu-item"
                 onClick={()=> {
                     props.goToMenu && setActiveMenu(props.goToMenu)
@@ -46,14 +46,10 @@ function DropdownMenu() {
 
         </>)
     }
-
-
-    // backgrounds, fashion, nature, science, education, feelings, health, people, religion, places, animals, industry, computer, food, sports, transportation, travel, buildings, business, music
-
     //animals,backgrounds,buildings,business,computer,education,fashion,feelings,food,health,industry,music,nature,people,places,religion,science,sports,transportation,travel
 
     return (
-        <div className="dropdown" style={{ height: menuHeight }}>
+        <div className="dropdown imageCat" style={{ height: menuHeight }}>
             <CSSTransition
             in={activeMenu === "main"}
             unmountOnExit timeout={500}
@@ -61,26 +57,26 @@ function DropdownMenu() {
             onEnter={calcHeight}
             >
                 <div className="menu">
-                    <DropdownItem dropdown={true} righticon={<ArrowRight/>} goToMenu="animals"> Animals</DropdownItem>
-                    <DropdownItem>Backgrounds</DropdownItem>
-                    <DropdownItem>Buildings</DropdownItem>
-                    <DropdownItem>Business</DropdownItem>
-                    <DropdownItem>Computer</DropdownItem>
-                    <DropdownItem>Education</DropdownItem>
-                    <DropdownItem>Fashion</DropdownItem>
-                    <DropdownItem>Feelings</DropdownItem>
-                    <DropdownItem>Food</DropdownItem>
-                    <DropdownItem>Health</DropdownItem>
-                    <DropdownItem>Industry</DropdownItem>
-                    <DropdownItem>Music</DropdownItem>
-                    <DropdownItem>Nature</DropdownItem>
-                    <DropdownItem>People</DropdownItem>
-                    <DropdownItem>Places</DropdownItem>
-                    <DropdownItem>Religion</DropdownItem>
-                    <DropdownItem>Science</DropdownItem>
-                    <DropdownItem>Sports</DropdownItem>
-                    <DropdownItem>Transportation</DropdownItem>
-                    <DropdownItem>Travel</DropdownItem>
+                    <DropdownItem difficulty={difficulty} dropdown={true} righticon={<ArrowRight/>} goToMenu="animals"> Animals</DropdownItem>
+                    <DropdownItem difficulty={difficulty}>Backgrounds</DropdownItem>
+                    <DropdownItem difficulty={difficulty}>Buildings</DropdownItem>
+                    <DropdownItem difficulty={difficulty}>Business</DropdownItem>
+                    <DropdownItem difficulty={difficulty}>Computer</DropdownItem>
+                    <DropdownItem difficulty={difficulty}>Education</DropdownItem>
+                    <DropdownItem difficulty={difficulty}>Fashion</DropdownItem>
+                    <DropdownItem difficulty={difficulty}>Feelings</DropdownItem>
+                    <DropdownItem difficulty={difficulty}>Food</DropdownItem>
+                    <DropdownItem difficulty={difficulty}>Health</DropdownItem>
+                    <DropdownItem difficulty={difficulty}>Industry</DropdownItem>
+                    <DropdownItem difficulty={difficulty}>Music</DropdownItem>
+                    <DropdownItem difficulty={difficulty}>Nature</DropdownItem>
+                    <DropdownItem difficulty={difficulty}>People</DropdownItem>
+                    <DropdownItem difficulty={difficulty}>Places</DropdownItem>
+                    <DropdownItem difficulty={difficulty}>Religion</DropdownItem>
+                    <DropdownItem difficulty={difficulty}>Science</DropdownItem>
+                    <DropdownItem difficulty={difficulty}>Sports</DropdownItem>
+                    <DropdownItem difficulty={difficulty}>Transportation</DropdownItem>
+                    <DropdownItem difficulty={difficulty}>Travel</DropdownItem>
                 </div>
             </CSSTransition>
 
@@ -106,15 +102,15 @@ function DropdownMenu() {
     )
 }
 
-const Dropdown = ({ open, setOpen })=> {
+const Dropdown = ({ open, setOpen, difficulty })=> {
 
     return (<>
-        <div className="catCont">
+        <div className="dropdownCont">
             <button className="catBtn" onClick={() => setOpen(!open)}>
                 Image Categories
                 <DownArrow />
             </button>
-            {open && <DropdownMenu/>}
+            {open && <DropdownMenu difficulty={difficulty}/>}
         </div>
     </>)
 }
