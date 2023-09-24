@@ -11,7 +11,7 @@ function DropdownMenu({ difficulty }) {
     const [menuHeight, setMenuHeight] = useState(null)
 
     useEffect(()=>{
-        const menu = document.querySelector(".dropdown")
+        const menu = document.querySelector(".imageCat")
         setMenuHeight(window.getComputedStyle(menu).height)
     }, [])
 
@@ -21,6 +21,7 @@ function DropdownMenu({ difficulty }) {
     }
 
     function DropdownItem(props){
+        const hashCategory = window.location.hash.substring(1, window.location.hash.indexOf('/'))
         return (<>
             {
                 props.dropdown ? (
@@ -35,7 +36,7 @@ function DropdownMenu({ difficulty }) {
                     </div>
                 ) :
                 <a href={`#${props.children.toLowerCase()}/d=${props.difficulty}`}
-                className="menu-item"
+                className={ hashCategory === props.children.toLowerCase() ? "menu-item selectedCat" : "menu-item"}
                 onClick={()=> {
                     props.goToMenu && setActiveMenu(props.goToMenu)
                 }}>
@@ -88,26 +89,30 @@ function DropdownMenu({ difficulty }) {
             >
                 <div className="menu">
                     <DropdownItem goToMenu={"main"} dropdown={true} lefticon={<ArrowLeft/>}> Back</DropdownItem>
-                    <DropdownItem>Dogs</DropdownItem>
-                    <DropdownItem>Cats</DropdownItem>
-                    <DropdownItem>Horses</DropdownItem>
-                    <DropdownItem>Pigs</DropdownItem>
-                    <DropdownItem>Pandas</DropdownItem>
-                    <DropdownItem>Farm Animals</DropdownItem>
-                    <DropdownItem>Zoo Animals</DropdownItem>
-                    <DropdownItem>Wild Animals</DropdownItem>
+                    <DropdownItem difficulty={difficulty}>Dogs</DropdownItem>
+                    <DropdownItem difficulty={difficulty}>Cats</DropdownItem>
+                    <DropdownItem difficulty={difficulty}>Horses</DropdownItem>
+                    <DropdownItem difficulty={difficulty}>Pigs</DropdownItem>
+                    <DropdownItem difficulty={difficulty}>Pandas</DropdownItem>
+                    <DropdownItem difficulty={difficulty}>Farm Animals</DropdownItem>
+                    <DropdownItem difficulty={difficulty}>Zoo Animals</DropdownItem>
+                    <DropdownItem difficulty={difficulty}>Wild Animals</DropdownItem>
                 </div>
             </CSSTransition>
         </div>
     )
 }
 
-const Dropdown = ({ open, setOpen, difficulty })=> {
-
+const Dropdown = ({ difficulty, hash })=> {
+    const [open, setOpen] = useState(false)
+    const hashCategory = window.location.hash.substring(1, window.location.hash.indexOf('/'))
+    useEffect(()=>{
+        setOpen(false)
+    }, [hash])
     return (<>
         <div className="dropdownCont">
             <button className="catBtn" onClick={() => setOpen(!open)}>
-                Image Categories
+                { hashCategory === "" ? "Image Categories" : hashCategory}
                 <DownArrow />
             </button>
             {open && <DropdownMenu difficulty={difficulty}/>}

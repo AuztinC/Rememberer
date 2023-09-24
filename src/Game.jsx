@@ -7,14 +7,13 @@ import Difficulty from './Difficulty'
 
 
 export default function Game() {
-  console.log((window.location.hash.substring(window.location.hash.indexOf('=')+1, window.location.hash.length)*1))
-  const [difficulty, setDifficulty] = useState((window.location.hash.substring(window.location.hash.indexOf('=')+1, window.location.hash.length)*1) || 15)
+  const [difficulty, setDifficulty] = useState((window.location.hash.substring(window.location.hash.indexOf('=')+1, window.location.hash.length)*1)  || 15)
   const [hash, setHash] = useState({hash: `${window.location.hash.slice(1)}/d=${difficulty}`})
   const [active, setActive] = useState([])
   const [inGame, setInGame] = useState(false)
+  const [winner, setWinner] = useState(false)
   const [picBank, setPicBank] = useState([])
   const [cardBank, setCardBank] = useState([])
-  const [open, setOpen] = useState(false)
   const [moves, setMoves] = useState(0)
   const [bestMoves, setBestMoves] = useState(window.localStorage.getItem(`${difficulty}/best_moves`) || 0)
   const bestTime = window.localStorage.getItem(`${difficulty}/best_moves`)*1
@@ -34,23 +33,16 @@ export default function Game() {
   const currentTimer = useRef()
 
   useEffect(()=>{
-    window.addEventListener("hashchange", reset)
+
+
     return () => {
       clearInterval(currentTimer.current)
-      window.removeEventListener("hashchange", reset)
+      window.removeEventListener("hashchange", setHash)
     }
   }, [])
 
 
   useEffect(() => {
-    date.setHours(0);
-    date.setMinutes(0);
-    date.setSeconds(0);
-    setTimer({ date })
-    clearInterval(currentTimer.current)
-
-    setMoves(0)
-    setOpen(false)
 
     async function fetchCard() { // --- Get images from Pixabay
       setCardBank(Array.from(document.getElementsByClassName("img")))
@@ -101,6 +93,7 @@ export default function Game() {
         score.current = score.current + 2
         setActive([])
         if(score.current === (difficulty*2)){ // --- WINNER
+          setWinner(true)
           setInGame(false)
           const currentTime = ( ((timer.date.getHours()*60) + timer.date.getMinutes()) * 60 + timer.date.getSeconds())
 
@@ -129,7 +122,14 @@ export default function Game() {
   }, [active])
 
   useEffect(()=>{
-    console.log(inGame)
+    window.addEventListener("hashchange", ()=>{
+      if(inGame){
+        if(window.confirm("reset?")){
+          setHash({hash: `${window.location.hash.slice(1)}/d=${difficulty}`})
+        }
+      } else setHash({hash: `${window.location.hash.slice(1)}/d=${difficulty}`})
+    })
+    console.log("from inGame", inGame)
     if(inGame){
       startTimer()
     } else {
@@ -145,33 +145,53 @@ export default function Game() {
       }, 1000)
   }
 
-  function reset(){
-    if(inGame){
-      if(window.confirm("This will reset your current game!")){
-        Array.from(document.getElementsByClassName("card-inner")).forEach((e)=>{
-          e.style.transform = "rotateY(180deg)"
-        })
-        setTimeout(()=>{
-          setPicBank([])
-          setHash({ hash: window.location.hash.slice(1), difficulty})
-          setOpen(false)
-          setInGame(false)
-        }, 700)
-      } else return
-    } else {
-      setHash({hash: window.location.hash.slice(1), difficulty})
-      setPicBank([])
-      setInGame(false)
-    }
-  }
+  // function reset(){
+  //   console.log('restting', inGame)
+  //   if(inGame){
+  //     console.log('weingame')
+  //     if(window.confirm("This will reset your current game!")){
+  //       Array.from(document.getElementsByClassName("card-inner")).forEach((e)=>{
+  //         e.style.transform = "rotateY(180deg)"
+  //       })
+  //       setActive([])
+  //       setWinner(false)
+  //       setInGame(false)
+  //       date.setHours(0);
+  //       date.setMinutes(0);
+  //       date.setSeconds(0);
+  //       setTimer({ date })
+  //       setMoves(0)
+  //       setTimeout(()=>{
+  //         setHash({hash: `${window.location.hash.slice(1)}/d=${difficulty}`})
+  //       }, 700)
+  //     }
+  //   } else {
+  //     Array.from(document.getElementsByClassName("card-inner")).forEach((e)=>{
+  //       e.style.transform = "rotateY(180deg)"
+  //     })
+  //     setActive([])
+  //     setWinner(false)
+  //     setInGame(false)
+  //     date.setHours(0);
+  //     date.setMinutes(0);
+  //     date.setSeconds(0);
+  //     setTimer({ date })
+  //     setMoves(0)
+  //     setTimeout(()=>{
+  //       setHash({hash: `${window.location.hash.slice(1)}/d=${difficulty}`})
+  //     }, 700)
+
+  //   }
+  // }
 
   const pic = picBank.find(pic => pic)
   return (<>
-  <Difficulty setDifficulty={setDifficulty} hash={hash}/>
-      { inGame ? <button onClick={reset}>New Game</button> : null}
-      <Dropdown open={open} setOpen={setOpen} difficulty={difficulty}/>
+      { inGame || winner ? <button className='newBtn' >New Game</button> : null}
+      <Difficulty setDifficulty={setDifficulty} difficulty={difficulty} hash={hash}/>
+      <Dropdown hash={hash} difficulty={difficulty}/>
       {/* <button onClick={()=>score.current = 30}>win</button> */}
-      <PlayerStats bestDateTime={bestDateTime} moves={moves} bestMoves={bestMoves} timer={timer}/>
+      <hr></hr>
+      <PlayerStats bestDateTime={bestDateTime} moves={moves} bestMoves={bestMoves} timer={timer} difficulty={difficulty}/>
 
     <div id='gameBox'>
       { !pic ? <h1>Loading...</h1> : cardBank.map((card) => {

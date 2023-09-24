@@ -1,22 +1,15 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
-const Dropdown = ({ hash, setDifficulty })=>{
+const Dropdown = ({ hash, setDifficulty, difficulty })=>{
     const hashCategory = hash.hash.substring(0, hash.hash.indexOf('/'))
-
     function DropdownItem(props){
         return (
             <div className="menu">
                 <a
-                href={`#${hashCategory}/d=${props.children.substring((props.children.indexOf('(')+1), (props.children.length-1))}`}
-                className="menu-item"
+                href={`#${hashCategory}/d=${props.children.substring(0, props.children.indexOf(" "))}`}
+                className={`menu-item ${difficulty === props.children ? "selectedCat" : ""}`}
                 onClick={()=>{
-                    if(props.children === "Easy"){
-                        setDifficulty(5)
-                    } else if(props.children === "Medium"){
-                        setDifficulty(10)
-                    } else {
-                        setDifficulty(15)
-                    }
+                    setDifficulty(props.children.substring(0, props.children.indexOf(" ")))
                     }}>
                     { props.children }
                 </a>
@@ -25,23 +18,26 @@ const Dropdown = ({ hash, setDifficulty })=>{
     }
 
     return (<div className="dropdown difficulty">
-        <DropdownItem hash={hashCategory} setDifficulty={setDifficulty} >Easy (10)</DropdownItem>
-        <DropdownItem hash={hashCategory} setDifficulty={setDifficulty} >Medium (20)</DropdownItem>
-        <DropdownItem hash={hashCategory} setDifficulty={setDifficulty} >Hard (30)</DropdownItem>
+        <DropdownItem hash={hashCategory} setDifficulty={setDifficulty} difficulty={difficulty}>5 Pair</DropdownItem>
+        <DropdownItem hash={hashCategory} setDifficulty={setDifficulty} difficulty={difficulty}>10 Pair</DropdownItem>
+        <DropdownItem hash={hashCategory} setDifficulty={setDifficulty} difficulty={difficulty}>15 Pair</DropdownItem>
     </div>)
 }
 
 
 
-export default function Difficulty({ difficulty, setDifficulty, hash }){
+export default function Difficulty({ setDifficulty, difficulty, hash }){
     const [open, setOpen] = useState(false)
-
+    const checkDifficulty = (window.location.hash.substring(window.location.hash.indexOf('=')+1, window.location.hash.length)*1)
+    useEffect(()=>{
+        setOpen(false)
+    }, [hash])
     return (
         <div className="dropdownCont">
-            <button className="" onClick={() => setOpen(!open)}>
-                Difficulty
+            <button className="diffBtn" onClick={() => setOpen(!open)}>
+                { checkDifficulty === 0 ? "Difficulty" : `${checkDifficulty} Pair`}
             </button>
-            {open && <Dropdown setDifficulty={setDifficulty} hash={hash}/>}
+            {open && <Dropdown setDifficulty={setDifficulty} hash={hash} difficulty={difficulty}/>}
         </div>
     )
 
