@@ -15,6 +15,12 @@ export default function Game() {
   const [moves, setMoves] = useState(0)
   const [bestMoves, setBestMoves] = useState(window.localStorage.getItem(`${difficulty}/best_moves`) || 0)
   let score = useRef(0)
+  
+  
+
+  
+  
+  
 
   const bestDate = new Date();
   bestDate.setHours(0);
