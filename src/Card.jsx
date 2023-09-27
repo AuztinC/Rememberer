@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import QuestionMark from './img/OrangeQuestion.png'
 
-export default function Card({ setInGame, moves, startTimer, setActive, active, img, id }) {
+export default function Card({ setInGame, moves, setActive, active, img, id }) {
   const [clicked, setClicked] = useState(false)
     //    --- Add clicked card to "Active" array for comparing
   function handleClick(event){

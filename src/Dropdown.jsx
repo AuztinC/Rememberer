@@ -43,7 +43,7 @@ const DropdownMenu = ({ difficulty, inGame, setOpen }) => {
                     </div>
                 ) :
                 <div
-                className={ hashCategory === props.children.toLowerCase() ? "menu-item selectedCat" : "menu-item"}
+                className={`menu-item ${hashCategory === props.children.toLowerCase() ? "selectedCat" : ""}`}
                 onClick={()=> {
                     if(inGame){
                         if(window.confirm("reset?")){

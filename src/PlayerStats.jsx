@@ -26,7 +26,7 @@ const PlayerStats = ({ moves, bestMoves, timer, bestDateTime, difficulty, setBes
         {bestDateTime.bestDate.getMinutes().toString().padStart(2, "0")}:
         {bestDateTime.bestDate.getSeconds().toString().padStart(2, "0")}</p>
     </div>
-    { bestMoves*1 !== 0  ? <button className="newGameBtn" onClick={ removeBest }>Reset Best Stats</button> : null}
+    { bestMoves*1 !== 0  ? <button className="resetBestBtn" onClick={ removeBest }>Reset Best Stats</button> : <div></div>}
     </>)
 }
 export default PlayerStats

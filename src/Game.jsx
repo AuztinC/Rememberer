@@ -12,15 +12,10 @@ export default function Game() {
   const [winner, setWinner] = useState(false)
   const [picBank, setPicBank] = useState([])
   const [cardBank, setCardBank] = useState([])
+  const [animateBg, setAnimateBg] = useState(true)
   const [moves, setMoves] = useState(0)
   const [bestMoves, setBestMoves] = useState(window.localStorage.getItem(`${difficulty}/best_moves`) || 0)
   let score = useRef(0)
-  
-  
-
-  
-  
-  
 
   const bestDate = new Date();
   bestDate.setHours(0);
@@ -170,19 +165,27 @@ export default function Game() {
     } else reset()
   }
 
+  function handleAnimation(){
+    const body = document.querySelector('body')
+    body.classList.toggle('animate')
+    setAnimateBg(!animateBg)
+  }
+
   const pic = picBank.find(pic => pic)
   return (<>
-      { inGame || winner ? <button className='newBtn' onClick={ newGame }>New Game</button> : null}
-      <Difficulty inGame={inGame} setDifficulty={setDifficulty} difficulty={difficulty} hash={hash}/>
-      <Dropdown inGame={inGame} hash={hash} difficulty={difficulty}/>
-      <PlayerStats bestDateTime={bestDateTime} setBestDateTime={setBestDateTime} setBestMoves={setBestMoves} bestDate={bestDate} moves={moves} bestMoves={bestMoves} timer={timer} difficulty={difficulty} reset={reset}/>
-
-    <div id='gameBox'>
-      { !pic ? <h1>Loading...</h1> : cardBank.map((card, i) => {
-        return (
-          <Card key={i} setInGame={setInGame} moves={moves} startTimer={startTimer} id={card.id} img={card.img} active={active} setActive={setActive}/>
-        )
-      }) }
-    </div>
+      <div className='gui'>
+        <Dropdown inGame={inGame} hash={hash} difficulty={difficulty}/>
+        { inGame || winner ? <button className='newBtn' onClick={ newGame }>New Game</button> : <div></div>}
+        <Difficulty inGame={inGame} setDifficulty={setDifficulty} difficulty={difficulty} hash={hash}/>
+        <PlayerStats bestDateTime={bestDateTime} setBestDateTime={setBestDateTime} setBestMoves={setBestMoves} bestDate={bestDate} moves={moves} bestMoves={bestMoves} timer={timer} difficulty={difficulty} reset={reset}/>
+        <button onClick={ handleAnimation } className={`animateBtn ${ animateBg ? "animating" : ""}`}>Animation</button>
+      </div>
+      <div id='gameBox'>
+        { !pic ? <h1>Loading...</h1> : cardBank.map((card, i) => {
+          return (
+            <Card key={i} setInGame={setInGame} moves={moves} startTimer={startTimer} id={card.id} img={card.img} active={active} setActive={setActive}/>
+          )
+        }) }
+      </div>
     </>)
 }

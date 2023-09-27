@@ -7,7 +7,7 @@ const Dropdown = ({ hash, setDifficulty, difficulty, inGame, setOpen })=>{
         return (
             <div className="menu">
                 <div
-                className={`menu-item`}
+                className={`menu-item ${difficulty === props.children.substring(0, props.children.indexOf(" "))*1 ? "selectedCat" : ""}`}
                 onClick={()=>{
                     console.log(inGame)
                     if(inGame){
