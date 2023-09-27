@@ -9,12 +9,15 @@ const Dropdown = ({ hash, setDifficulty, difficulty, inGame, setOpen })=>{
                 <div
                 className={`menu-item`}
                 onClick={()=>{
-                    setOpen(false)
+                    console.log(inGame)
                     if(inGame){
-                        if(window.confirm("reset?")){
+                        if(window.confirm("This will reset your current game!")){
                             window.location.hash = `#${hashCategory}/d=${props.children.substring(0, props.children.indexOf(" "))}`
-                        }
-                    } else {window.location.hash = `#${hashCategory}/d=${props.children.substring(0, props.children.indexOf(" "))}`;
+                            setOpen(false)
+                        } else return
+                    } else {
+                        window.location.hash = `#${hashCategory}/d=${props.children.substring(0, props.children.indexOf(" "))}`;
+                        setOpen(false)
                     }
                     setDifficulty(props.children.substring(0, props.children.indexOf(" ")))
                     }}>
@@ -51,7 +54,7 @@ const Difficulty = memo(function Difficulty({ setDifficulty, difficulty, hash, i
             <button className="diffBtn" onClick={() => setOpen(!open)}>
                 { checkDifficulty === 0 ? "Difficulty" : `${checkDifficulty} Pair`}
             </button>
-            {open && <Dropdown setDifficulty={setDifficulty} hash={hash} difficulty={difficulty} setOpen={setOpen}/>}
+            {open && <Dropdown setDifficulty={setDifficulty} hash={hash} difficulty={difficulty} setOpen={setOpen} inGame={inGame}/>}
         </div>
     )
 

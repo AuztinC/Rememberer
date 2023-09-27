@@ -27,13 +27,13 @@ body {
   background: #682020;
 }
 .App {
-  border-radius: 5px;
-  border: 10px orangered ridge;
   width: 80vw;
   height: 95vh;
 }
 
 #game {
+  border: 10px orangered ridge;
+  border-radius: 10px;
   position: relative;
   background: url("./img/serious-white.png");
   width: 100%;
@@ -46,7 +46,7 @@ body {
 }
 #gameBox{
   position: relative;
-  background: url("./img/serious-white.png");
+  /* background: url("./img/serious-white.png"); */
   width: 100%;
   height: 83%;
   display: flex;
@@ -176,23 +176,27 @@ body {
   width: 100px;
 }
 .dropdown {
+  max-height: 80vh;
+  box-sizing: border-box;
   border: 1px solid black;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: baseline;
   align-items: center;
   position: absolute;
   background-color: orange;
   border-radius: 2px;
-  overflow: hidden;
+  overflow-x: hidden;
   transition: height .5s ease;
 }
 .menu{
+  /* height: 100%; */
   width: 100%;
 }
 .menu-icon{
   height: 15px;
   width: 15px;
+  pointer-events: none;
 }
 .arrowleft{
   position: absolute;
@@ -209,6 +213,7 @@ body {
   background-color: rgb(255, 189, 67);
 }
 .menu-item{
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -217,6 +222,7 @@ body {
   width: 100%;
   padding: .5rem;
   transition: all .3s;
+  border: 1px solid orange;
 }
 .menu-item:hover{
   border: 1px solid black;

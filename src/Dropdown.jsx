@@ -12,7 +12,7 @@ const DropdownMenu = ({ difficulty, inGame, setOpen }) => {
 
     // -- Close menu when click outside of dropdown
     window.addEventListener("click", (ev)=>{
-        if(ev.target.className !== "menu-item" && ev.target.className !== "catBtn" && ev.target === 'path'){
+        if(ev.target.className !== "menu-item" && ev.target.className !== "catBtn" && ev.target.className.baseVal !== "downArrow"){
             setOpen(false)
         }
     })
@@ -50,8 +50,10 @@ const DropdownMenu = ({ difficulty, inGame, setOpen }) => {
                             window.location.hash = `#${props.children.toLowerCase()}/d=${props.difficulty}`
                             setOpen(false)
                         }
-                    } else {window.location.hash = `#${props.children.toLowerCase()}/d=${props.difficulty}`;
-                    setOpen(false)}
+                    } else {
+                        window.location.hash = `#${props.children.toLowerCase()}/d=${props.difficulty}`;
+                        setOpen(false)
+                    }
                     props.goToMenu && setActiveMenu(props.goToMenu)
                 }}>
                         <span className="icon-arrow">{props.icon}</span>
@@ -127,7 +129,7 @@ const Dropdown = memo(function Dropdown({ difficulty, hash, inGame }) {
         <div className="dropdownCont">
             <button className="catBtn" onClick={() => setOpen(!open)}>
                 { hashCategory === "" ? "Image Categories" : decodeURI(hashCategory)}
-                <DownArrow />
+                <DownArrow setOpen={setOpen} open={open}/>
             </button>
             {open && <DropdownMenu difficulty={difficulty} inGame={inGame} setOpen={setOpen}/>}
         </div>

@@ -98,7 +98,7 @@ export default function Game() {
           setInGame(false)
           const currentTime = ( ((timer.date.getHours()*60) + timer.date.getMinutes()) * 60 + timer.date.getSeconds())
 
-          if(bestDate.getSeconds() === 0 || currentTime < bestDate.getSeconds()){
+          if(bestDate.getSeconds() === 0 || currentTime*1 < bestDate.getSeconds()){
             window.localStorage.setItem(`${difficulty}/best_time`, currentTime)
             bestDate.setHours(0)
             bestDate.setMinutes(0)
@@ -107,7 +107,7 @@ export default function Game() {
           }
           // console.log(bestMoves, moves)
           if(bestMoves*1 === 0 || moves < bestMoves){
-            window.localStorage.setItem(`${difficulty}/best_moves`, moves)
+            window.localStorage.setItem(`${difficulty}/best_moves`, moves+1)
             setBestMoves(moves+1)
           }
         }
@@ -153,7 +153,7 @@ export default function Game() {
     setMoves(0)
     setTimeout(()=>{
       setHash({hash: `${window.location.hash.slice(1)}/d=${difficulty}`})
-    }, 700)
+    }, 150)
   }
 
   function newGame(){
