@@ -22,10 +22,10 @@ export default function Card({ setInGame, moves, startTimer, setActive, active, 
     }, 300)
   }, [clicked])
 
-  
-  
+
+
   return (
-    <div className="card" key={id}>
+    <div className="card">
       <div className="card-inner">
         <div className="card-front" >
           <img className="img" alt="card" src={img} />

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, memo } from "react"
 import DownArrow from "./DownArrow"
 import ArrowRight from "./ArrowRight"
 import ArrowLeft from "./ArrowLeft"
@@ -6,9 +6,16 @@ import { CSSTransition } from "react-transition-group"
 
 
 
-function DropdownMenu({ difficulty }) {
+const DropdownMenu = ({ difficulty, inGame, setOpen }) => {
     const [activeMenu, setActiveMenu] = useState("main")
     const [menuHeight, setMenuHeight] = useState(null)
+
+    // -- Close menu when click outside of dropdown
+    window.addEventListener("click", (ev)=>{
+        if(ev.target.className !== "menu-item" && ev.target.className !== "catBtn" && ev.target === 'path'){
+            setOpen(false)
+        }
+    })
 
     useEffect(()=>{
         const menu = document.querySelector(".imageCat")
@@ -35,14 +42,21 @@ function DropdownMenu({ difficulty }) {
                         <span className="icon-arrow">{props.righticon}</span>
                     </div>
                 ) :
-                <a href={`#${props.children.toLowerCase()}/d=${props.difficulty}`}
+                <div
                 className={ hashCategory === props.children.toLowerCase() ? "menu-item selectedCat" : "menu-item"}
                 onClick={()=> {
+                    if(inGame){
+                        if(window.confirm("reset?")){
+                            window.location.hash = `#${props.children.toLowerCase()}/d=${props.difficulty}`
+                            setOpen(false)
+                        }
+                    } else {window.location.hash = `#${props.children.toLowerCase()}/d=${props.difficulty}`;
+                    setOpen(false)}
                     props.goToMenu && setActiveMenu(props.goToMenu)
                 }}>
                         <span className="icon-arrow">{props.icon}</span>
                     {props.children}
-                </a>
+                </div>
             }
 
         </>)
@@ -103,7 +117,7 @@ function DropdownMenu({ difficulty }) {
     )
 }
 
-const Dropdown = ({ difficulty, hash })=> {
+const Dropdown = memo(function Dropdown({ difficulty, hash, inGame }) {
     const [open, setOpen] = useState(false)
     const hashCategory = window.location.hash.substring(1, window.location.hash.indexOf('/'))
     useEffect(()=>{
@@ -112,13 +126,13 @@ const Dropdown = ({ difficulty, hash })=> {
     return (<>
         <div className="dropdownCont">
             <button className="catBtn" onClick={() => setOpen(!open)}>
-                { hashCategory === "" ? "Image Categories" : hashCategory}
+                { hashCategory === "" ? "Image Categories" : decodeURI(hashCategory)}
                 <DownArrow />
             </button>
-            {open && <DropdownMenu difficulty={difficulty}/>}
+            {open && <DropdownMenu difficulty={difficulty} inGame={inGame} setOpen={setOpen}/>}
         </div>
     </>)
-}
+});
 export default Dropdown
 
 

@@ -287,16 +287,16 @@ button:hover{
     display: none;
   }
   .playerStats{
-    /* margin-left: 20px; */
+    margin: 5px;
     width: 100%;
     /* height: 10%; */
   }
   .playerStats p{
     font-size: .8rem;
-    margin-right:0px
+    /* margin-right:0px */
   }
   .playerStats p:nth-child(even){
-    margin-right:5px
+    /* margin-right:5px */
   }
   .diffBtn{
     width: 70px;
